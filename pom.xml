@@ -3,7 +3,7 @@
 	<groupId>org.archie</groupId>
 	<artifactId>org.archie.groktls</artifactId>
 	<packaging>bundle</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>GrokTLS</name>
 
 	<properties>
@@ -141,7 +141,7 @@
 		<url>https://github.com/timw/groktls</url>
 		<connection>scm:git:git://github.com/timw/groktls.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/timw/groktls.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>org.archie.groktls-0.1.0</tag>
   </scm>
 
 	<issueManagement>
