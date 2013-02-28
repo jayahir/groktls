@@ -112,4 +112,13 @@ public class ProtocolVariantFilterTest extends AbstractItemFilterTest<ProtocolVa
         checkResult(">=TLSv1", filter, supported, expected);
     }
 
+    @Test
+    public void testSpacesInFilterSpec() {
+        final List<String> supported = ALL_PROTOCOLS;
+        final List<String> expected = Arrays.asList(TLSv1, TLSv11);
+        ItemFilter<ProtocolVariant> filter = new ProtocolVariantFilterBuilderImpl().add(protocolVariant(TLSv1))
+                .add(protocolVariant(TLSv11)).build();
+        checkResult("TLSv1, TLSv1.1", filter, supported, expected);
+    }
+
 }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.archie.groktls.ItemFilter;
+import org.archie.groktls.ItemFilterBuilder.Filter;
 import org.archie.groktls.ItemFilterSpecParser;
 import org.archie.groktls.NamedItem;
-import org.archie.groktls.ItemFilterBuilder.Filter;
 import org.archie.groktls.impl.filter.ItemFilterStep.Op;
 
 public abstract class ItemFilterSpecParserImpl<I extends NamedItem, F extends Filter<I>> implements ItemFilterSpecParser<I> {
@@ -19,6 +19,10 @@ public abstract class ItemFilterSpecParserImpl<I extends NamedItem, F extends Fi
 
         final String[] parts = filterSpec.split("[:,]");
         for (String part : parts) {
+            part = part.trim();
+            if (part.isEmpty()) {
+                continue;
+            }
             apply(part, b);
         }
 

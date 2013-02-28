@@ -9,7 +9,6 @@ import java.util.List;
 import org.archie.groktls.AbstractItemFilterTest;
 import org.archie.groktls.ItemFilter;
 import org.archie.groktls.ItemFilterSpecParser;
-import org.archie.groktls.cipher.CipherSuite;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterBuilderImpl;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterSpecParserImpl;
 import org.junit.Before;
@@ -513,5 +512,16 @@ public class CipherSuiteFilterTest extends AbstractItemFilterTest<CipherSuite> {
         final List<String> expectedCiphers = Arrays.asList("TLS_DH_anon_WITH_AES_128_CBC_SHA");
         ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(complementOfAll()).delete(encryption("NULL")).build();
         checkResult("UNSAFE:-eNULL", filter, supported, expectedCiphers);
+    }
+
+    @Test
+    public void testSpacesInFilterSpec() {
+        final List<String> supported = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DH_RSA_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DH_anon_WITH_AES_128_CBC_SHA",
+                                                     "TLS_RSA_WITH_NULL_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_DH_RSA_WITH_AES_128_CBC_SHA");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(cipherSuite("TLS_RSA_WITH_AES_128_CBC_SHA")).add(cipherSuite("TLS_DH_RSA_WITH_AES_128_CBC_SHA")).build();
+        checkResult("TLS_RSA_WITH_AES_128_CBC_SHA, TLS_DH_RSA_WITH_AES_128_CBC_SHA", filter, supported, expectedCiphers);
     }
 }
