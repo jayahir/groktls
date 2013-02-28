@@ -260,7 +260,8 @@ public class CipherSuiteFilters {
                                          && !cipher.getKeyExchange().getKeyAgreementAlgo().equals("NULL")
                                          && !cipher.getKeyExchange().getAuthenticationAlgo().equals("NULL")
                                          && !cipher.getCipher().getAlgorithm().equals("NULL")
-                                         && (cipher.getMac() != null) && !cipher.getMac().getAlgorithm().equals("NULL"));
+                                         && (cipher.getMac() != null)
+                                         && !cipher.getMac().getAlgorithm().equals("NULL") && !cipher.getMac().getAlgorithm().equals("MD5"));
     }
 
     /**
