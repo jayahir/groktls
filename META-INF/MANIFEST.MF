@@ -11,12 +11,12 @@ Bundle-Name: org.archie.groktls
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.archie.groktls
 Bundle-Vendor: Tim Whittington
-Bundle-Version: 1.0.0.SNAPSHOT
+Bundle-Version: 1.0.1.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
 Export-Package: org.archie.groktls;uses:="org.archie.groktls.protocol,or
- g.archie.groktls.cipher,javax.net.ssl";version="1.0.0.SNAPSHOT",org.arc
- hie.groktls.cipher;uses:="org.archie.groktls";version="1.0.0.SNAPSHOT",
- org.archie.groktls.protocol;uses:="org.archie.groktls";version="1.0.0.S
+ g.archie.groktls.cipher,javax.net.ssl";version="1.0.1.SNAPSHOT",org.arc
+ hie.groktls.cipher;uses:="org.archie.groktls";version="1.0.1.SNAPSHOT",
+ org.archie.groktls.protocol;uses:="org.archie.groktls";version="1.0.1.S
  NAPSHOT"
 Import-Package: javax.net.ssl;version="0.0.0"
 Main-Class: org.archie.groktls.InteractiveFilterSpecTester
