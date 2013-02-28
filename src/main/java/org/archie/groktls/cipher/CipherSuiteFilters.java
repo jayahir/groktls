@@ -1,0 +1,494 @@
+package org.archie.groktls.cipher;
+
+import java.util.Comparator;
+import java.util.Set;
+
+import org.archie.groktls.ItemFilter;
+import org.archie.groktls.ItemFilterBuilder;
+import org.archie.groktls.ItemFilterBuilder.Filter;
+
+/**
+ * Common {@link Filter}s that can be applied in a {@link ItemFilterBuilder} to build a {@link CipherSuiteFilter} to filter a set of
+ * cipher suites.
+ * <p>
+ * The filters provided here are generally the same as the equivalent operations in the <a
+ * href="http://www.openssl.org/docs/apps/ciphers.html">OpenSSL ciphers</a> command.
+ */
+public class CipherSuiteFilters {
+
+    public interface CipherFilter extends Filter<CipherSuite> {
+    }
+
+    private abstract static class UnsafeFilter implements CipherFilter {
+        @Override
+        public boolean isSafe() {
+            return false;
+        }
+
+    }
+
+    private abstract static class SafeFilter implements CipherFilter {
+        @Override
+        public boolean isSafe() {
+            return true;
+        }
+    }
+
+    private static final Comparator<? super CipherSuite> KEY_LENGTH_COMPARATOR = new Comparator<CipherSuite>() {
+
+        @Override
+        public int compare(final CipherSuite o1, final CipherSuite o2) {
+            Cipher c1 = o1.getCipher();
+            Cipher c2 = o2.getCipher();
+            if (c1 == c2) {
+                return 0;
+            } else if (c2 == null) {
+                return 1;
+            } else if (c1 == null) {
+                return -1;
+            }
+            return c2.getKeySize() - c1.getKeySize();
+        }
+    };
+
+    private static final Comparator<? super CipherSuite> KEY_STRENGTH_COMPARATOR = new Comparator<CipherSuite>() {
+
+        @Override
+        public int compare(final CipherSuite o1, final CipherSuite o2) {
+            Cipher c1 = o1.getCipher();
+            Cipher c2 = o2.getCipher();
+            if (c1 == c2) {
+                return 0;
+            } else if (c2 == null) {
+                return 1;
+            } else if (c1 == null) {
+                return -1;
+            }
+            return c2.getStrength() - c1.getStrength();
+        }
+    };
+
+    public static Comparator<? super CipherSuite> byKeyLength() {
+        return KEY_LENGTH_COMPARATOR;
+    }
+
+    public static Comparator<? super CipherSuite> byEncryptionStrength() {
+        return KEY_STRENGTH_COMPARATOR;
+    }
+
+    /**
+     * Matches a single cipher suite by name. The provided cipher suite name is not parsed and is directly matched.
+     *
+     * @param cipherSuite
+     *            the cipher suite name to match.
+     */
+    public static CipherFilter cipherSuite(final String cipherSuite) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return cipherSuite.equals(cipher.getName());
+            }
+        };
+    }
+
+    /**
+     * Matches any signalling cipher suite (e.g. <code>TLS_EMPTY_RENEGOTIATION_INFO_SCSV</code>).
+     */
+    public static CipherFilter signalling() {
+        return new UnsafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return cipher.isSignalling();
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use a specified encryption (cipher) algorithm.
+     *
+     * @param algorithm
+     *            the normalised name of the encryption algorithm (e.g. <code>AES, 3DES, RC4, NULL</code>).
+     */
+    public static CipherFilter encryption(final String algorithm) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return ((cipher.getCipher() != null) && algorithm.equals(cipher.getCipher().getAlgorithm()));
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use a specifed encryption (cipher) mode.
+     *
+     * @param mode
+     *            the name of the cipher mode to match (e.g. <code>CBC, GCM</code>).
+     */
+    public static CipherFilter encryptionMode(final String mode) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return ((cipher.getCipher() != null) && mode.equals(cipher.getCipher().getMode()));
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use encryption (a cipher) with key lengths of a minimum size.
+     *
+     * @param minSize
+     *            the minimum number of bits in the cipher key length (e.g. <code>128</code>)
+     */
+    public static CipherFilter encryptionKeySize(final int minSize) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getCipher() != null) && (cipher.getCipher().getKeySize() >= minSize);
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use encryption (a cipher) with effective key strengths of a minimum size.
+     *
+     * @param minSize
+     *            the minimum number of bits in the cipher strength (e.g. <code>128</code>)
+     */
+    public static CipherFilter encryptionStrength(final int minSize) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getCipher() != null) && (cipher.getCipher().getStrength() >= minSize);
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use a specified authentication algorithm.
+     *
+     * @param algorithm
+     *            the normalised name of the authentication algorithm (e.g. <code>DSS, RSA, NULL</code>).
+     */
+    public static CipherFilter authentication(final String algorithm) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getKeyExchange() != null) && algorithm.equals(cipher.getKeyExchange().getAuthenticationAlgo());
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use a specified key exchange algorithm.
+     *
+     * @param algorithm
+     *            the normalised name of the key exchange algorithm (e.g. <code>RSA, DH, DHE, NULL</code>).
+     */
+    public static CipherFilter keyExchange(final String algorithm) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getKeyExchange() != null) && algorithm.equals(cipher.getKeyExchange().getKeyAgreementAlgo());
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use a specified MAC algorithm algorithm. The name matched against is the one used in the cipher suite name
+     * (e.g. the underlying hash where <code>HMAC</code> is used, or the MAC algorithm if something other than <code>HMAC</code> is used.
+     *
+     * @param algorithm
+     *            the normalised name of the MAC algorithm (e.g. <code>MD5, SHA, SHA256</code>).
+     */
+    public static CipherFilter mac(final String algorithm) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getMac() != null) && algorithm.equals(cipher.getMac().getAlgorithm());
+            }
+        };
+    }
+
+    /**
+     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, with the exception of any
+     * cipher suites with <code>NULL</code> key exchange, authentication or encryption (these can be matched using
+     * {@link #complementOfAll()}.
+     * <p>
+     * This differs from the OpenSSL <b>ALL</b> cipher suite in that it also excludes <code>NULL</code> key exchange and authentication
+     * ciphers.
+     */
+    public static CipherFilter all() {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                // TODO: Note the non-equivalence to SAFE (i.e. in the context of SUPPORTED:-ALL)
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, <b>including</b> cipher suites
+     * with <code>NULL</code> key exchange, authentication or encryption.
+     * <p>
+     */
+    public static CipherFilter supportedIncludingUnsafe() {
+        return new UnsafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Matches any supported ciphers that are not matched by {@link #all()}. <br>
+     * This will include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     */
+    public static CipherFilter complementOfAll() {
+        return new UnsafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return !CipherSuiteFilters.isSafe(cipher);
+            }
+        };
+    }
+
+    public static boolean isSafe(final CipherSuite cipher) {
+        // TODO: Move export to cipher?
+        return cipher.isSignalling() || ((cipher.getKeyExchange() != null) && !cipher.getKeyExchange().isExport()
+                                         && !cipher.getKeyExchange().getKeyAgreementAlgo().equals("NULL")
+                                         && !cipher.getKeyExchange().getAuthenticationAlgo().equals("NULL")
+                                         && !cipher.getCipher().getAlgorithm().equals("NULL")
+                                         && (cipher.getMac() != null) && !cipher.getMac().getAlgorithm().equals("NULL"));
+    }
+
+    /**
+     * Matches any of the {@link ItemFilter#filter(java.util.List, java.util.List) default cipher suites} that are also matched by
+     * {@link #all()}. <br>
+     * This will not include any of the <code>NULL</code> cipher suites excluded by {@link #all()}, even if they are specified as defaults
+     * during the filter invocation.
+     */
+    public static CipherFilter defaults() {
+        return isDefault(true);
+    }
+
+    private static CipherFilter isDefault(final boolean include) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (include == defaults.contains(cipher));
+            }
+        };
+    }
+
+    /**
+     * Matches any of the cipher suites matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
+     * This will not include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     */
+    public static CipherFilter complementOfDefaults() {
+        return isDefault(false);
+    }
+
+    /**
+     * Matches cipher suites that use high key length encryption, which is currently defined as AES with 128 bit keys or other ciphers with
+     * key lengths > 128 bit.
+     */
+    public static CipherFilter high() {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                if (cipher.getCipher() == null) {
+                    return false;
+                }
+                Cipher c = cipher.getCipher();
+                return ((c.getKeySize() > 128) || ((c.getKeySize() == 128) && "AES".equals(c.getAlgorithm())));
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use medium key length encryption, which is currently as algorithms other than AES using 128 bit keys.
+     */
+    public static CipherFilter medium() {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                if (cipher.getCipher() == null) {
+                    return false;
+                }
+                Cipher c = cipher.getCipher();
+                return (c.getKeySize() == 128) && !"AES".equals(c.getAlgorithm());
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use low key length encryption, which is currently defined as any key length < 128 bits.
+     */
+    public static CipherFilter low() {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                if (cipher.getCipher() == null) {
+                    return false;
+                }
+                return !cipher.getKeyExchange().isExport() && !cipher.getCipher().getAlgorithm().equals("NULL")
+                       && (cipher.getCipher().getKeySize() < 128);
+            }
+        };
+    }
+
+    /**
+     * Matches any export cipher suites.
+     */
+    public static CipherFilter export() {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                // TODO: This relies on export marker on key exchange also
+                // implying encryption export
+                return (cipher.getKeyExchange() != null) && (cipher.getKeyExchange().isExport());
+            }
+        };
+    }
+
+    /**
+     * Matches any cipher suites using algorithms approved (or accepted) for use in FIPS 140-2.
+     * <p>
+     * This is based on information in <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">FIPS 140-2 Annex A</a>
+     * and <a href="http://csrc.nist.gov/publications/nistpubs/800-52/SP800-52.pdf">NIST Special Publication 800-52</a>.
+     * <p>
+     * The current interpretation of this is:
+     * <ul>
+     * <li><b>Key exchange:</b> <code>DH, DHE, RSA, ECDH, ECDHE</code></li>
+     * <li><b>Authentication:</b> <code>DSS, RSA, ECDSA<</code></li>
+     * <li><b>Encryption:</b> <code>AES, 3DES</code></li>
+     * <li><b>Encryption Mode:</b> <code>CBC, GCM</code></li>
+     * <li><b>Mac/Hash:</b> <code>SHA, SHA256, SHA384</code></li>
+     * </ul>
+     */
+    public static CipherFilter fips() {
+        // http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf
+        // http://csrc.nist.gov/publications/nistpubs/800-52/SP800-52.pdf
+        return and(or(keyExchange("DH"), keyExchange("DHE"), keyExchange("RSA"), keyExchange("ECDH"), keyExchange("ECDHE")),
+                   or(authentication("DSS"), authentication("RSA"), authentication("ECDSA")),
+                   or(encryption("AES"), encryption("3DES")),
+                   or(encryptionMode("CBC"), encryptionMode("GCM")),
+                   or(mac("SHA"), mac("SHA256"), mac("SHA384"), mac("SHA512")));
+    }
+
+    /**
+     * Matches any cipher suites using algorithms approved for use in TLS by NSA Suite B with a 128 bit minimum security.
+     * <p>
+     * This is based on information in <a href="http://tools.ietf.org/html/rfc6460#section-3.1">RFC 6460</a>.
+     * <p>
+     * The current interpretation of this is:
+     * <ul>
+     * <li><b>Key exchange:</b> <code>ECDHE</code></li>
+     * <li><b>Authentication:</b> <code>ECDSA<</code></li>
+     * <li><b>Encryption:</b> <code>AES</code></li>
+     * <li><b>Encryption Mode:</b> <code>GCM</code></li>
+     * <li><b>Mac/Hash:</b> <code>SHA256, SHA384</code></li>
+     * </ul>
+     */
+    public static CipherFilter suiteb128() {
+        // http://tools.ietf.org/html/rfc6460#section-3.1
+        return and(keyExchange("ECDHE"),
+                   authentication("ECDSA"),
+                   encryption("AES"),
+                   encryptionMode("GCM"),
+                   or(mac("SHA256"), mac("SHA384"), mac("SHA512")));
+    }
+
+    /**
+     * Matches any cipher suites using algorithms approved for use in TLS by NSA Suite B with a 192 bit minimum security.
+     * <p>
+     * This is based on information in <a href="http://tools.ietf.org/html/rfc6460#section-3.1">RFC 6460</a>.
+     * <p>
+     * The current interpretation of this is:
+     * <ul>
+     * <li><b>Key exchange:</b> <code>ECDHE</code></li>
+     * <li><b>Authentication:</b> <code>ECDSA<</code></li>
+     * <li><b>Encryption:</b> <code>AES with 256 bit key length</code></li>
+     * <li><b>Encryption Mode:</b> <code>GCM</code></li>
+     * <li><b>Mac/Hash:</b> <code>SHA384</code></li>
+     * </ul>
+     */
+    public static CipherFilter suiteb192() {
+        // http://tools.ietf.org/html/rfc6460#section-3.1
+        // http://www.nsa.gov/ia/programs/suiteb_cryptography/
+        //
+        return and(keyExchange("ECDHE"),
+                   authentication("ECDSA"),
+                   encryption("AES"),
+                   encryptionKeySize(256),
+                   encryptionMode("GCM"),
+                   or(mac("SHA384"), mac("SHA512")));
+    }
+
+    /**
+     * Matches any cipher suites not matched by a specified filter.
+     *
+     * @param filter
+     *            the filter to negate.
+     */
+    public static CipherFilter not(final CipherFilter filter) {
+        return new CipherFilter() {
+            @Override
+            public boolean isSafe() {
+                return filter.isSafe();
+            }
+
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return !filter.matches(cipher, defaults);
+            }
+        };
+    }
+
+    /**
+     * Matches any cipher suites matched by any of the specified filters.
+     */
+    public static CipherFilter or(final CipherFilter... filters) {
+        return new CipherFilter() {
+            @Override
+            public boolean isSafe() {
+                return (filters.length > 0) && filters[0].isSafe();
+            }
+
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                for (Filter<CipherSuite> filter : filters) {
+                    if (filter.matches(cipher, defaults)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Matches any cipher suites matched by all of the specified filters.
+     */
+    public static CipherFilter and(final CipherFilter... filters) {
+        return new CipherFilter() {
+            @Override
+            public boolean isSafe() {
+                return (filters.length > 0) && filters[0].isSafe();
+            }
+
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                for (Filter<CipherSuite> filter : filters) {
+                    if (!filter.matches(cipher, defaults)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+    }
+
+}
