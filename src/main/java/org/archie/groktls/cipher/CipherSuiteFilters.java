@@ -8,17 +8,27 @@ import org.archie.groktls.ItemFilterBuilder;
 import org.archie.groktls.ItemFilterBuilder.Filter;
 
 /**
- * Common {@link Filter}s that can be applied in a {@link ItemFilterBuilder} to build a {@link CipherSuiteFilter} to filter a set of
- * cipher suites.
+ * Common {@link Filter}s that can be applied in a {@link ItemFilterBuilder} to filter a set of {@link CipherSuite}s.
+ * <p>
+ * Unless noted, all filters imply that they will only include {@link #isSafe(CipherSuite) safe cipher suites} - i.e. unless the filter is
+ * {@link #and(CipherFilter...) concatenated} with an unsafe filter, or is applied to already matched results that are unsafe, then unsafe
+ * cipher suites will not be matched.
  * <p>
  * The filters provided here are generally the same as the equivalent operations in the <a
- * href="http://www.openssl.org/docs/apps/ciphers.html">OpenSSL ciphers</a> command.
+ * href="http://www.openssl.org/docs/apps/ciphers.html">OpenSSL ciphers</a> command, but differ particularly in the treatment of
+ * <code>ALL</ALL>, which excludes all {@link #isSafe(CipherSuite) unsafe} cipher suites, unlike the OpenSSL version.
  */
 public class CipherSuiteFilters {
 
+    /**
+     * A {@link Filter} for {@link CipherSuite}s.
+     */
     public interface CipherFilter extends Filter<CipherSuite> {
     }
 
+    /**
+     * A filter that will by default only include unsafe cipher suites.
+     */
     private abstract static class UnsafeFilter implements CipherFilter {
         @Override
         public boolean isSafe() {
@@ -27,6 +37,9 @@ public class CipherSuiteFilters {
 
     }
 
+    /**
+     * A filter that will by default only include safe cipher suites.
+     */
     private abstract static class SafeFilter implements CipherFilter {
         @Override
         public boolean isSafe() {
@@ -34,6 +47,9 @@ public class CipherSuiteFilters {
         }
     }
 
+    /**
+     * Comparison of {@link CipherSuite} by {@link Cipher#getKeySize() key size}.
+     */
     private static final Comparator<? super CipherSuite> KEY_LENGTH_COMPARATOR = new Comparator<CipherSuite>() {
 
         @Override
@@ -51,6 +67,9 @@ public class CipherSuiteFilters {
         }
     };
 
+    /**
+     * Comparison of {@link CipherSuite} by {@link Cipher#getStrength() encryption strength}.
+     */
     private static final Comparator<? super CipherSuite> KEY_STRENGTH_COMPARATOR = new Comparator<CipherSuite>() {
 
         @Override
@@ -68,10 +87,16 @@ public class CipherSuiteFilters {
         }
     };
 
+    /**
+     * Produces a comparator for {@link CipherSuite}s that will order them by {@link Cipher#getKeySize() key length}.
+     */
     public static Comparator<? super CipherSuite> byKeyLength() {
         return KEY_LENGTH_COMPARATOR;
     }
 
+    /**
+     * Produces a comparator for {@link CipherSuite}s that will order them by {@link Cipher#getStrength() encryption strength}.
+     */
     public static Comparator<? super CipherSuite> byEncryptionStrength() {
         return KEY_STRENGTH_COMPARATOR;
     }
@@ -79,8 +104,7 @@ public class CipherSuiteFilters {
     /**
      * Matches a single cipher suite by name. The provided cipher suite name is not parsed and is directly matched.
      *
-     * @param cipherSuite
-     *            the cipher suite name to match.
+     * @param cipherSuite the cipher suite name to match.
      */
     public static CipherFilter cipherSuite(final String cipherSuite) {
         return new SafeFilter() {
@@ -106,8 +130,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use a specified encryption (cipher) algorithm.
      *
-     * @param algorithm
-     *            the normalised name of the encryption algorithm (e.g. <code>AES, 3DES, RC4, NULL</code>).
+     * @param algorithm the normalised name of the encryption algorithm (e.g. <code>AES, 3DES, RC4, NULL</code>).
      */
     public static CipherFilter encryption(final String algorithm) {
         return new SafeFilter() {
@@ -121,8 +144,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use a specifed encryption (cipher) mode.
      *
-     * @param mode
-     *            the name of the cipher mode to match (e.g. <code>CBC, GCM</code>).
+     * @param mode the name of the cipher mode to match (e.g. <code>CBC, GCM</code>).
      */
     public static CipherFilter encryptionMode(final String mode) {
         return new SafeFilter() {
@@ -136,8 +158,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use encryption (a cipher) with key lengths of a minimum size.
      *
-     * @param minSize
-     *            the minimum number of bits in the cipher key length (e.g. <code>128</code>)
+     * @param minSize the minimum number of bits in the cipher key length (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionKeySize(final int minSize) {
         return new SafeFilter() {
@@ -151,8 +172,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use encryption (a cipher) with effective key strengths of a minimum size.
      *
-     * @param minSize
-     *            the minimum number of bits in the cipher strength (e.g. <code>128</code>)
+     * @param minSize the minimum number of bits in the cipher strength (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionStrength(final int minSize) {
         return new SafeFilter() {
@@ -166,8 +186,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use a specified authentication algorithm.
      *
-     * @param algorithm
-     *            the normalised name of the authentication algorithm (e.g. <code>DSS, RSA, NULL</code>).
+     * @param algorithm the normalised name of the authentication algorithm (e.g. <code>DSS, RSA, NULL</code>).
      */
     public static CipherFilter authentication(final String algorithm) {
         return new SafeFilter() {
@@ -181,8 +200,7 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use a specified key exchange algorithm.
      *
-     * @param algorithm
-     *            the normalised name of the key exchange algorithm (e.g. <code>RSA, DH, DHE, NULL</code>).
+     * @param algorithm the normalised name of the key exchange algorithm (e.g. <code>RSA, DH, DHE, NULL</code>).
      */
     public static CipherFilter keyExchange(final String algorithm) {
         return new SafeFilter() {
@@ -194,11 +212,11 @@ public class CipherSuiteFilters {
     }
 
     /**
-     * Matches cipher suites that use a specified MAC algorithm algorithm. The name matched against is the one used in the cipher suite name
-     * (e.g. the underlying hash where <code>HMAC</code> is used, or the MAC algorithm if something other than <code>HMAC</code> is used.
+     * Matches cipher suites that use a specified MAC algorithm algorithm. <br>
+     * The name matched against is the one used in the cipher suite name (e.g. the underlying hash where <code>HMAC</code> is used, or the
+     * MAC algorithm if something other than <code>HMAC</code> is used).
      *
-     * @param algorithm
-     *            the normalised name of the MAC algorithm (e.g. <code>MD5, SHA, SHA256</code>).
+     * @param algorithm the normalised name of the MAC algorithm (e.g. <code>SHA, SHA256</code>).
      */
     public static CipherFilter mac(final String algorithm) {
         return new SafeFilter() {
@@ -211,7 +229,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, with the exception of any
-     * cipher suites with <code>NULL</code> key exchange, authentication or encryption (these can be matched using
+     * cipher suites that are considered {@link #isSafe(CipherSuite) unsafe} - these unsafe cipher suites can be matched using
      * {@link #complementOfAll()}.
      * <p>
      * This differs from the OpenSSL <b>ALL</b> cipher suite in that it also excludes <code>NULL</code> key exchange and authentication
@@ -231,6 +249,7 @@ public class CipherSuiteFilters {
      * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, <b>including</b> cipher suites
      * with <code>NULL</code> key exchange, authentication or encryption.
      * <p>
+     * <b>Unsafe:</b> this will match <b>unsafe</b> cipher suites.
      */
     public static CipherFilter supportedIncludingUnsafe() {
         return new UnsafeFilter() {
@@ -244,6 +263,8 @@ public class CipherSuiteFilters {
     /**
      * Matches any supported ciphers that are not matched by {@link #all()}. <br>
      * This will include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     * <p>
+     * <b>Unsafe:</b> this will match <b>unsafe</b> cipher suites.
      */
     public static CipherFilter complementOfAll() {
         return new UnsafeFilter() {
@@ -254,6 +275,21 @@ public class CipherSuiteFilters {
         };
     }
 
+    /**
+     * Determines if a cipher is considered safe by filter rules.
+     * <p>
+     * Currently a cipher suite is considered safe iff:
+     * <ul>
+     * <li>It does not use <code>NULL</code> {@link KeyExchange#getKeyAgreementAlgo() key agreement}.</li>
+     * <li>It does not use <code>NULL</code> or <code>anon</code> {@link KeyExchange#getAuthenticationAlgo() authentication}.</li>
+     * <li>It does not use <code>NULL</code> {@link CipherSuite#getCipher() encryption/cipher}</li>
+     * <li>It does not use <code>EXPORT</code> grade {@link CipherSuite#getCipher() encryption/cipher}</li>
+     * <li>It does not use the <code>MD5</code> {@link CipherSuite#getMac() digest algorithm}</li>
+     * </ul>
+     *
+     * @param cipher the cipher suite to check.
+     * @return <code>true</code> iff the cipher suite is safe to use.
+     */
     public static boolean isSafe(final CipherSuite cipher) {
         // TODO: Move export to cipher?
         return cipher.isSignalling() || ((cipher.getKeyExchange() != null) && !cipher.getKeyExchange().isExport()
@@ -267,8 +303,8 @@ public class CipherSuiteFilters {
     /**
      * Matches any of the {@link ItemFilter#filter(java.util.List, java.util.List) default cipher suites} that are also matched by
      * {@link #all()}. <br>
-     * This will not include any of the <code>NULL</code> cipher suites excluded by {@link #all()}, even if they are specified as defaults
-     * during the filter invocation.
+     * This will not include any of the unsafe cipher suites excluded by {@link #all()}, even if they are specified as defaults during the
+     * filter invocation.
      */
     public static CipherFilter defaults() {
         return isDefault(true);
@@ -285,7 +321,8 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any of the cipher suites matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
-     * This will not include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     * This will not include any of the unsafe cipher suites excluded by {@link #all()} - i.e. {@link #defaults() defaults} and
+     * {@link #complementOfDefaults()} are subsets of the safe default cipher suites.
      */
     public static CipherFilter complementOfDefaults() {
         return isDefault(false);
@@ -309,7 +346,8 @@ public class CipherSuiteFilters {
     }
 
     /**
-     * Matches cipher suites that use medium key length encryption, which is currently as algorithms other than AES using 128 bit keys.
+     * Matches cipher suites that use medium key length encryption, which is currently defined as algorithms other than AES using 128 bit
+     * keys.
      */
     public static CipherFilter medium() {
         return new SafeFilter() {
@@ -342,6 +380,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any export cipher suites.
+     * <p>
+     * <b>Requires Unsafe:</b> export filters are not considered {@link #isSafe(CipherSuite) safe}, so this filter is only sensible when
+     * combined with an unsafe filter.
      */
     public static CipherFilter export() {
         return new SafeFilter() {
@@ -355,7 +396,7 @@ public class CipherSuiteFilters {
     }
 
     /**
-     * Matches any cipher suites using algorithms approved (or accepted) for use in FIPS 140-2.
+     * Matches any cipher suites using algorithms approved (or generally accepted) for use in FIPS 140-2.
      * <p>
      * This is based on information in <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">FIPS 140-2 Annex A</a>
      * and <a href="http://csrc.nist.gov/publications/nistpubs/800-52/SP800-52.pdf">NIST Special Publication 800-52</a>.
@@ -430,9 +471,10 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any cipher suites not matched by a specified filter.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the negated filter is safe.
      *
-     * @param filter
-     *            the filter to negate.
+     * @param filter the filter to negate.
      */
     public static CipherFilter not(final CipherFilter filter) {
         return new CipherFilter() {
@@ -450,6 +492,8 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any cipher suites matched by any of the specified filters.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the first filter combines is safe.
      */
     public static CipherFilter or(final CipherFilter... filters) {
         return new CipherFilter() {
@@ -472,6 +516,8 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any cipher suites matched by all of the specified filters.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the first filter combines is safe.
      */
     public static CipherFilter and(final CipherFilter... filters) {
         return new CipherFilter() {
