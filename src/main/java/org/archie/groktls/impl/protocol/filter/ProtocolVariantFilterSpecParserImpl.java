@@ -55,7 +55,7 @@ public class ProtocolVariantFilterSpecParserImpl extends ItemFilterSpecParserImp
             final String algo = part.substring(1);
             filter = family(algo);
         } else if (part.startsWith(">=")) {
-            final String variant = part.substring(2);
+            final String variant = part.substring(2).trim();
             filter = minimumVersion(variant);
         } else {
             final ProtocolVariant pv = this.parser.parse(part);
