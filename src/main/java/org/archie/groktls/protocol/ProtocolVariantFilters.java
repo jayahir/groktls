@@ -50,6 +50,8 @@ public class ProtocolVariantFilters {
      * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported protocol variants}, with the exception of any
      * protocol variants that are considered {@link #isSafe(ProtocolVariant) unsafe} - these unsafe protocol variants can be matched using
      * {@link #complementOfAll()}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>ALL</code>.
      */
     public static ProtocolVariantFilter all() {
         return new SafeFilter() {
@@ -66,6 +68,8 @@ public class ProtocolVariantFilters {
      * considered {@link #isSafe(ProtocolVariant) unsafe}.
      * <p>
      * <b>Unsafe:</b> this will match <b>unsafe</b> protocol variants.
+     * <p>
+     * <em>Filter spec usage:</em> <code>SUPPORTED</code>.
      */
     public static ProtocolVariantFilter supportedIncludingUnsafe() {
         return new UnsafeFilter() {
@@ -81,6 +85,8 @@ public class ProtocolVariantFilters {
      * This will include any of the {@link #isSafe(ProtocolVariant) unsafe} protocol variants excluded by {@link #all()}.
      * <p>
      * <b>Unsafe:</b> this will match <b>unsafe</b> protocol variants.
+     * <p>
+     * <em>Filter spec usage:</em> <code>COMPLEMENTOFALL</code> or <code>UNSAFE</code>.
      */
     public static ProtocolVariantFilter complementOfAll() {
         return new UnsafeFilter() {
@@ -112,6 +118,8 @@ public class ProtocolVariantFilters {
      * {@link #all()}. <br>
      * This will not include any of the unsafe protocol variants excluded by {@link #all()}, even if they are specified as defaults during
      * the filter invocation.
+     * <p>
+     * <em>Filter spec usage:</em> <code>DEFAULT</code>.
      */
     public static ProtocolVariantFilter defaults() {
         return isDefault(true);
@@ -130,6 +138,8 @@ public class ProtocolVariantFilters {
      * Matches any of the protocol variants matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
      * This will not include any of the unsafe protocol variants excluded by {@link #all()} - i.e. {@link #defaults() defaults} and
      * {@link #complementOfDefaults()} are subsets of the safe default protocol variants.
+     * <p>
+     * <em>Filter spec usage:</em> <code>COMPLEMENTOFDEFAULT</code>.
      */
     public static ProtocolVariantFilter complementOfDefaults() {
         return isDefault(false);
@@ -139,6 +149,8 @@ public class ProtocolVariantFilters {
      * Matches protocol variants from a specific {@link ProtocolVariant#getFamily() family}.
      *
      * @param family the name of the family (e.g. <code>TLS</code>).
+     *            <p>
+     *            <em>Filter spec usage:</em> <code>fFAMILY</code> e.g. <code>fTLS</code>.
      */
     public static ProtocolVariantFilter family(final String family) {
         return new SafeFilter() {
@@ -151,7 +163,9 @@ public class ProtocolVariantFilters {
 
     /**
      * Matches a single protocol variant by name. The provided protocol variant name is not parsed and is directly matched.
-     *
+     * <p>
+     * <em>Filter spec usage:</em> literal variant, e.g. <code>TLSv1.1</code>.
+     * 
      * @param variant the protocol variant name to match.
      */
     public static ProtocolVariantFilter protocolVariant(final String variant) {
@@ -165,6 +179,8 @@ public class ProtocolVariantFilters {
 
     /**
      * Matches {@link ProtocolVariant#getPseudoProtocol() pseudo protocols}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>PSEUDO</code>.
      */
     public static ProtocolVariantFilter pseudoProtocols() {
         return new SafeFilter() {
@@ -177,6 +193,8 @@ public class ProtocolVariantFilters {
 
     /**
      * Matches protocol variants with a version number equal to or greater than the specified version.
+     * <p>
+     * <em>Filter spec usage:</em> no equivalent.
      *
      * @param major the minimum major version.
      * @param minor the minimum minor version if the major version is equal to the minimum.
@@ -192,11 +210,12 @@ public class ProtocolVariantFilters {
 
     /**
      * Matches protocol variants with a version number equal to or greater than the specified protocol variant.
+     * <p>
+     * <em>Filter spec usage:</em> <code>>=TLSv1.2</code>.
      *
      * @param protocolVariant the full name of a protocol variant (e.g. <code>TLSv1.2</code>), which will be parsed and used as the base
      *            version number.
      */
-
     public static ProtocolVariantFilter minimumVersion(final String protocolVariant) {
         final ProtocolVariant pv = new ProtocolVariantParserImpl().parse(protocolVariant);
         if (pv == null) {

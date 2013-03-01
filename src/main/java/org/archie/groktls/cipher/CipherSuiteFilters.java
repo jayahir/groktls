@@ -89,6 +89,8 @@ public class CipherSuiteFilters {
 
     /**
      * Produces a comparator for {@link CipherSuite}s that will order them by {@link Cipher#getKeySize() key length}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>@LENGTH</code>.
      */
     public static Comparator<? super CipherSuite> byKeyLength() {
         return KEY_LENGTH_COMPARATOR;
@@ -96,6 +98,8 @@ public class CipherSuiteFilters {
 
     /**
      * Produces a comparator for {@link CipherSuite}s that will order them by {@link Cipher#getStrength() encryption strength}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>@STRENGTH</code>.
      */
     public static Comparator<? super CipherSuite> byEncryptionStrength() {
         return KEY_STRENGTH_COMPARATOR;
@@ -103,7 +107,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches a single cipher suite by name. The provided cipher suite name is not parsed and is directly matched.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> literal cipher suite name, e.g. <code>TLS_DH_RSA_WITH_AES_128_CBC_SHA</code>.
+     *
      * @param cipherSuite the cipher suite name to match.
      */
     public static CipherFilter cipherSuite(final String cipherSuite) {
@@ -117,6 +123,8 @@ public class CipherSuiteFilters {
 
     /**
      * Matches any signalling cipher suite (e.g. <code>TLS_EMPTY_RENEGOTIATION_INFO_SCSV</code>).
+     * <p>
+     * <em>Filter spec usage:</em> <code>SCSV</code>.
      */
     public static CipherFilter signalling() {
         return new UnsafeFilter() {
@@ -129,7 +137,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified encryption (cipher) algorithm.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>eCIPHER</code>, e.g. <code>eAES</code>.
+     *
      * @param algorithm the normalised name of the encryption algorithm (e.g. <code>AES, 3DES, RC4, NULL</code>).
      */
     public static CipherFilter encryption(final String algorithm) {
@@ -143,7 +153,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specifed encryption (cipher) mode.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>eCIPHER_MODE</code> or <code>e_MODE</code>, e.g. <code>eAES_GCM</code> or <code>e_GCM</code>.
+     *
      * @param mode the name of the cipher mode to match (e.g. <code>CBC, GCM</code>).
      */
     public static CipherFilter encryptionMode(final String mode) {
@@ -157,7 +169,10 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use encryption (a cipher) with key lengths of a minimum size.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>eCIPHER_KEYLENGTH</code> or <code>e_KEYLENGTH</code>, e.g. <code>eAES_128</code> or
+     * <code>e_128</code>.
+     *
      * @param minSize the minimum number of bits in the cipher key length (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionKeySize(final int minSize) {
@@ -171,7 +186,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use encryption (a cipher) with effective key strengths of a minimum size.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> no equivalent.
+     *
      * @param minSize the minimum number of bits in the cipher strength (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionStrength(final int minSize) {
@@ -185,7 +202,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified authentication algorithm.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>aALGO</code>, e.g. <code>aRSA</code> or <code>aNULL</code>.
+     *
      * @param algorithm the normalised name of the authentication algorithm (e.g. <code>DSS, RSA, NULL</code>).
      */
     public static CipherFilter authentication(final String algorithm) {
@@ -199,7 +218,9 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified key exchange algorithm.
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>kALGO</code>, e.g. <code>kDHE</code> or <code>kNULL</code>.
+     *
      * @param algorithm the normalised name of the key exchange algorithm (e.g. <code>RSA, DH, DHE, NULL</code>).
      */
     public static CipherFilter keyExchange(final String algorithm) {
@@ -215,7 +236,9 @@ public class CipherSuiteFilters {
      * Matches cipher suites that use a specified MAC algorithm algorithm. <br>
      * The name matched against is the one used in the cipher suite name (e.g. the underlying hash where <code>HMAC</code> is used, or the
      * MAC algorithm if something other than <code>HMAC</code> is used).
-     * 
+     * <p>
+     * <em>Filter spec usage:</em> <code>mALGO</code>, e.g. <code>mSHA</code> or <code>mNULL</code>.
+     *
      * @param algorithm the normalised name of the MAC algorithm (e.g. <code>SHA, SHA256</code>).
      */
     public static CipherFilter mac(final String algorithm) {
@@ -231,6 +254,8 @@ public class CipherSuiteFilters {
      * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, with the exception of any
      * cipher suites that are considered {@link #isSafe(CipherSuite) unsafe} - these unsafe cipher suites can be matched using
      * {@link #complementOfAll()}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>ALL</code>.
      * <p>
      * This differs from the OpenSSL <b>ALL</b> cipher suite in that it also excludes <code>NULL</code> key exchange and authentication
      * ciphers.
@@ -249,6 +274,8 @@ public class CipherSuiteFilters {
      * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, <b>including</b> cipher suites
      * with <code>NULL</code> key exchange, authentication or encryption.
      * <p>
+     * <em>Filter spec usage:</em> <code>SUPPORTED</code>.
+     * <p>
      * <b>Unsafe:</b> this will match <b>unsafe</b> cipher suites.
      */
     public static CipherFilter supportedIncludingUnsafe() {
@@ -263,6 +290,8 @@ public class CipherSuiteFilters {
     /**
      * Matches any supported ciphers that are not matched by {@link #all()}. <br>
      * This will include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     * <p>
+     * <em>Filter spec usage:</em> <code>COMPLEMENTOFALL</code> or <code>UNSAFE</code>.
      * <p>
      * <b>Unsafe:</b> this will match <b>unsafe</b> cipher suites.
      */
@@ -286,7 +315,7 @@ public class CipherSuiteFilters {
      * <li>It does not use <code>EXPORT</code> grade {@link CipherSuite#getCipher() encryption/cipher}</li>
      * <li>It does not use the <code>MD5</code> {@link CipherSuite#getMac() digest algorithm}</li>
      * </ul>
-     * 
+     *
      * @param cipher the cipher suite to check.
      * @return <code>true</code> iff the cipher suite is safe to use.
      */
@@ -305,6 +334,8 @@ public class CipherSuiteFilters {
      * {@link #all()}. <br>
      * This will not include any of the unsafe cipher suites excluded by {@link #all()}, even if they are specified as defaults during the
      * filter invocation.
+     * <p>
+     * <em>Filter spec usage:</em> <code>DEFAULT</code>.
      */
     public static CipherFilter defaults() {
         return isDefault(true);
@@ -323,6 +354,8 @@ public class CipherSuiteFilters {
      * Matches any of the cipher suites matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
      * This will not include any of the unsafe cipher suites excluded by {@link #all()} - i.e. {@link #defaults() defaults} and
      * {@link #complementOfDefaults()} are subsets of the safe default cipher suites.
+     * <p>
+     * <em>Filter spec usage:</em> <code>COMPLEMENTOFDEFAULT</code>.
      */
     public static CipherFilter complementOfDefaults() {
         return isDefault(false);
@@ -331,6 +364,8 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use high key length encryption, which is currently defined as AES with 128 bit keys or other ciphers with
      * key lengths > 128 bit.
+     * <p>
+     * <em>Filter spec usage:</em> <code>HIGH</code>.
      */
     public static CipherFilter high() {
         return new SafeFilter() {
@@ -348,6 +383,8 @@ public class CipherSuiteFilters {
     /**
      * Matches cipher suites that use medium key length encryption, which is currently defined as algorithms other than AES using 128 bit
      * keys.
+     * <p>
+     * <em>Filter spec usage:</em> <code>MEDIUM</code>.
      */
     public static CipherFilter medium() {
         return new SafeFilter() {
@@ -364,6 +401,8 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use low key length encryption, which is currently defined as any key length < 128 bits.
+     * <p>
+     * <em>Filter spec usage:</em> <code>LOW</code>.
      */
     public static CipherFilter low() {
         return new SafeFilter() {
@@ -383,6 +422,8 @@ public class CipherSuiteFilters {
      * <p>
      * <b>Requires Unsafe:</b> export filters are not considered {@link #isSafe(CipherSuite) safe}, so this filter is only sensible when
      * combined with an unsafe filter.
+     * <p>
+     * <em>Filter spec usage:</em> <code>EXP</code> or <code>EXPORT</code>.
      */
     public static CipherFilter export() {
         return new SafeFilter() {
@@ -409,6 +450,8 @@ public class CipherSuiteFilters {
      * <li><b>Encryption Mode:</b> <code>CBC, GCM</code></li>
      * <li><b>Mac/Hash:</b> <code>SHA, SHA256, SHA384</code></li>
      * </ul>
+     * <p>
+     * <em>Filter spec usage:</em> <code>FIPS</code> or <code>FIPS140</code>.
      */
     public static CipherFilter fips() {
         // http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf
@@ -433,6 +476,8 @@ public class CipherSuiteFilters {
      * <li><b>Encryption Mode:</b> <code>GCM</code></li>
      * <li><b>Mac/Hash:</b> <code>SHA256, SHA384</code></li>
      * </ul>
+     * <p>
+     * <em>Filter spec usage:</em> <code>SUITEB128</code>.
      */
     public static CipherFilter suiteb128() {
         // http://tools.ietf.org/html/rfc6460#section-3.1
@@ -456,6 +501,8 @@ public class CipherSuiteFilters {
      * <li><b>Encryption Mode:</b> <code>GCM</code></li>
      * <li><b>Mac/Hash:</b> <code>SHA384</code></li>
      * </ul>
+     * <p>
+     * <em>Filter spec usage:</em> <code>SUITEB192</code>.
      */
     public static CipherFilter suiteb192() {
         // http://tools.ietf.org/html/rfc6460#section-3.1
@@ -473,7 +520,7 @@ public class CipherSuiteFilters {
      * Matches any cipher suites not matched by a specified filter.
      * <p>
      * <b>Safety:</b> the filter produced is safe iff the negated filter is safe.
-     * 
+     *
      * @param filter the filter to negate.
      */
     public static CipherFilter not(final CipherFilter filter) {

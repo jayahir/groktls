@@ -16,6 +16,15 @@ import org.archie.groktls.cipher.CipherSuiteFilters;
 import org.archie.groktls.protocol.ProtocolVariant;
 import org.archie.groktls.protocol.ProtocolVariantFilters;
 
+/**
+ * Interactive tester for cipher suite and protocol variant filter specifications.
+ * <p>
+ * Run without arguments, cipher suite filter specs can be entered, and the results of evaluating the filters against the cipher suites
+ * supported by the JVM running the program are displayed.
+ * <p>
+ * When run with an argument of <code>protocolvariant</code> or <code>pv</code>, the same interactive testing can be done for protocol
+ * variants.
+ */
 public class InteractiveFilterSpecTester {
 
     private static final String CS_OUTPUT_FORMAT = "%-40s %-8s %-8s %-10s %-4s %3d (%-3d) %-6s %4d %s%n";
