@@ -3,7 +3,6 @@ package org.archie.groktls.cipher;
 import static org.junit.Assert.*;
 
 import org.archie.groktls.ItemParser;
-import org.archie.groktls.cipher.CipherSuite;
 import org.archie.groktls.impl.cipher.CipherSuiteParserImpl;
 import org.junit.Test;
 
@@ -166,11 +165,12 @@ public class TlsCipherParserTest {
 
     @Test
     public void testAdditionalExport1024CipherSuites() {
-        check("TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA384", "RSA", "RSA", true, "1024", "DES", "CBC", 56, "SHA384", 384);
-        check("TLS_RSA_EXPORT1024_WITH_RC4_56_SHA384", "RSA", "RSA", true, "1024", "RC4", null, 56, "SHA384", 384);
-        check("TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA384", "DHE", "DSS", true, "1024", "DES", "CBC", 56, "SHA384", 384);
-        check("TLS_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA384", "DHE", "DSS", true, "1024", "RC4", null, 56, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_RC4_128_SHA384", "DHE", "DSS", false, null, "RC4", null, 128, "SHA384", 384);
+        http: // tools.ietf.org/html/draft-ietf-tls-56-bit-ciphersuites-01
+        check("TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA", "RSA", "RSA", true, "1024", "DES", "CBC", 56, "SHA", 160);
+        check("TLS_RSA_EXPORT1024_WITH_RC4_56_SHA", "RSA", "RSA", true, "1024", "RC4", null, 56, "SHA", 160);
+        check("TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA", "DHE", "DSS", true, "1024", "DES", "CBC", 56, "SHA", 160);
+        check("TLS_DHE_DSS_EXPORT1024_WITH_RC4_56_SHA", "DHE", "DSS", true, "1024", "RC4", null, 56, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_RC4_128_SHA", "DHE", "DSS", false, null, "RC4", null, 128, "SHA", 160);
     }
 
     @Test
