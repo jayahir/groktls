@@ -42,54 +42,6 @@ public class CipherSuiteFilterSpecParserImpl extends ItemFilterSpecParserImpl<Ci
         // TODO: SUITEB128ONLY?
         CIPHER_STRINGS.put("SUITEB128", suiteb128());
         CIPHER_STRINGS.put("SUITEB192", suiteb192());
-
-        CIPHER_STRINGS.put("NULL", and(supportedIncludingUnsafe(), encryption("NULL")));
-        // aNULL, eNULL covered with spec syntax
-        // kRSA, aRSA covered with spec syntax
-        CIPHER_STRINGS.put("RSA", or(keyExchange("RSA"), authentication("RSA")));
-        CIPHER_STRINGS.put("kEDH", keyExchange("DHE"));
-
-        // TODO: kDH includes ephemeral?
-        CIPHER_STRINGS.put("kDHr", and(keyExchange("DH"), authentication("RSA")));
-        CIPHER_STRINGS.put("kDHd", and(keyExchange("DH"), authentication("DSS")));
-        CIPHER_STRINGS.put("kDH", and(keyExchange("DH"), or(authentication("DSS"), authentication("RSA"))));
-
-        // aDSS covered by spec syntax
-        CIPHER_STRINGS.put("DSS", authentication("DSS"));
-
-        // TODO: What is aDH?
-
-        // Skipped kFZA, aFZA, eFZA, FZA (unimplemented by OpenSSL)
-
-        // TODO: TLSv1.2, TLSv1, SSLv3, SSLv2
-
-        // TODO: Does DH cover ECDH/ECDHE?
-        CIPHER_STRINGS.put("DH", or(keyExchange("DH"), keyExchange("DHE")));
-        CIPHER_STRINGS.put("ADH", and(supportedIncludingUnsafe(), or(keyExchange("DH"), keyExchange("DHE")), authentication("NULL")));
-
-        CIPHER_STRINGS.put("AES128", and(encryption("AES"), encryptionKeySize(128)));
-        CIPHER_STRINGS.put("AES256", and(encryption("AES"), encryptionKeySize(256)));
-        CIPHER_STRINGS.put("AES", encryption("AES"));
-        CIPHER_STRINGS.put("AESGCM", and(encryption("AES"), encryptionMode("GCM")));
-
-        CIPHER_STRINGS.put("CAMELLIA128", and(encryption("CAMELLIA"), encryptionKeySize(128)));
-        CIPHER_STRINGS.put("CAMELLIA256", and(encryption("CAMELLIA"), encryptionKeySize(256)));
-        CIPHER_STRINGS.put("CAMELLIA", encryption("CAMELLIA"));
-
-        CIPHER_STRINGS.put("3DES", encryption("3DES"));
-        CIPHER_STRINGS.put("DES", encryption("DES"));
-        CIPHER_STRINGS.put("RC4", encryption("RC4"));
-        CIPHER_STRINGS.put("RC2", encryption("RC2"));
-        CIPHER_STRINGS.put("IDEA", encryption("IDEA"));
-        CIPHER_STRINGS.put("SEED", encryption("SEED"));
-        CIPHER_STRINGS.put("MD5", encryption("MD5"));
-        CIPHER_STRINGS.put("SHA1", mac("SHA"));
-        CIPHER_STRINGS.put("SHA", mac("SHA"));
-        CIPHER_STRINGS.put("SHA256", mac("SHA256"));
-        CIPHER_STRINGS.put("SHA384", mac("SHA384"));
-
-        // TODO: GOST
-        // TODO: PSK
     }
 
     private final CipherSuiteParserImpl cipherSuiteParser = new CipherSuiteParserImpl();
