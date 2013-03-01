@@ -3,14 +3,31 @@ package org.archie.groktls.protocol;
 import java.util.Set;
 
 import org.archie.groktls.ItemFilter;
+import org.archie.groktls.ItemFilterBuilder;
 import org.archie.groktls.ItemFilterBuilder.Filter;
 import org.archie.groktls.impl.protocol.ProtocolVariantParserImpl;
 
+/**
+ * Common {@link Filter}s that can be applied in a {@link ItemFilterBuilder} to filter a set of {@link ProtocolVariant}s.
+ * <p>
+ * Unless noted, all filters imply that they will only include {@link #isSafe(ProtocolVariant) safe protocol variants} - i.e. unless the
+ * filter is {@link #and(ProtocolVariant...) concatenated} with an unsafe filter, or is applied to already matched results that are unsafe,
+ * then unsafe protocol variants will not be matched.
+ * <p>
+ * The filters provided here behave in the same way as the filters in {@link ProtocolVariantFilters} with regard to matching unsafe filters
+ * .
+ */
 public class ProtocolVariantFilters {
 
+    /**
+     * A {@link Filter} for {@link ProtoVariant}s.
+     */
     public interface ProtocolVariantFilter extends Filter<ProtocolVariant> {
     }
 
+    /**
+     * A filter that will by default only include unsafe protocol variants.
+     */
     private abstract static class UnsafeFilter implements ProtocolVariantFilter {
         @Override
         public boolean isSafe() {
@@ -19,6 +36,9 @@ public class ProtocolVariantFilters {
 
     }
 
+    /**
+     * A filter that will by default only include safe protocol variants.
+     */
     private abstract static class SafeFilter implements ProtocolVariantFilter {
         @Override
         public boolean isSafe() {
@@ -27,12 +47,9 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, with the exception of any
-     * cipher suites with <code>NULL</code> key exchange, authentication or encryption (these can be matched using
+     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported protocol variants}, with the exception of any
+     * protocol variants that are considered {@link #isSafe(ProtocolVariant) unsafe} - these unsafe protocol variants can be matched using
      * {@link #complementOfAll()}.
-     * <p>
-     * This differs from the OpenSSL <b>ALL</b> cipher suite in that it also excludes <code>NULL</code> key exchange and authentication
-     * ciphers.
      */
     public static ProtocolVariantFilter all() {
         return new SafeFilter() {
@@ -45,9 +62,10 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported cipher suites}, <b>including</b> cipher suites
-     * with <code>NULL</code> key exchange, authentication or encryption.
+     * Matches all of the {@link ItemFilter#filter(java.util.List, java.util.List) supported protocol variants} including any that are
+     * considered {@link #isSafe(ProtocolVariant) unsafe}.
      * <p>
+     * <b>Unsafe:</b> this will match <b>unsafe</b> protocol variants.
      */
     public static ProtocolVariantFilter supportedIncludingUnsafe() {
         return new UnsafeFilter() {
@@ -59,8 +77,10 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches any supported ciphers that are not matched by {@link #all()}. <br>
-     * This will include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     * Matches any supported protocol variants that are not matched by {@link #all()}. <br>
+     * This will include any of the {@link #isSafe(ProtocolVariant) unsafe} protocol variants excluded by {@link #all()}.
+     * <p>
+     * <b>Unsafe:</b> this will match <b>unsafe</b> protocol variants.
      */
     public static ProtocolVariantFilter complementOfAll() {
         return new UnsafeFilter() {
@@ -71,11 +91,28 @@ public class ProtocolVariantFilters {
         };
     }
 
+    /**
+     * Determines if a protocol variant is considered safe by filter rules.
+     * <p>
+     * Currently a protocol variant is considered safe iff:
+     * <ul>
+     * <li>It is later than or equal to <code>SSLv3</code> (e.g. the version number is >= 3.0)</li>
+     * </ul>
+     *
+     * @param item the protocol variant to check.
+     * @return <code>true</code> iff the protocol variant is safe to use.
+     */
     public static boolean isSafe(final ProtocolVariant item) {
         // < SSLv3 not deemed safe
         return ProtocolVariantParserImpl.SSLv3.compareTo(item) <= 0;
     }
 
+    /**
+     * Matches any of the {@link ItemFilter#filter(java.util.List, java.util.List) default protocol variants} that are also matched by
+     * {@link #all()}. <br>
+     * This will not include any of the unsafe protocol variants excluded by {@link #all()}, even if they are specified as defaults during
+     * the filter invocation.
+     */
     public static ProtocolVariantFilter defaults() {
         return isDefault(true);
     }
@@ -90,13 +127,19 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches any of the cipher suites matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
-     * This will not include any of the <code>NULL</code> cipher suites excluded by {@link #all()}.
+     * Matches any of the protocol variants matched by {@link #all()} that are not in the {@link #defaults() defaults}. <br>
+     * This will not include any of the unsafe protocol variants excluded by {@link #all()} - i.e. {@link #defaults() defaults} and
+     * {@link #complementOfDefaults()} are subsets of the safe default protocol variants.
      */
     public static ProtocolVariantFilter complementOfDefaults() {
         return isDefault(false);
     }
 
+    /**
+     * Matches protocol variants from a specific {@link ProtocolVariant#getFamily() family}.
+     *
+     * @param family the name of the family (e.g. <code>TLS</code>).
+     */
     public static ProtocolVariantFilter family(final String family) {
         return new SafeFilter() {
             @Override
@@ -106,6 +149,11 @@ public class ProtocolVariantFilters {
         };
     }
 
+    /**
+     * Matches a single protocol variant by name. The provided protocol variant name is not parsed and is directly matched.
+     *
+     * @param variant the protocol variant name to match.
+     */
     public static ProtocolVariantFilter protocolVariant(final String variant) {
         return new SafeFilter() {
             @Override
@@ -115,6 +163,9 @@ public class ProtocolVariantFilters {
         };
     }
 
+    /**
+     * Matches {@link ProtocolVariant#getPseudoProtocol() pseudo protocols}.
+     */
     public static ProtocolVariantFilter pseudoProtocols() {
         return new SafeFilter() {
             @Override
@@ -124,6 +175,12 @@ public class ProtocolVariantFilters {
         };
     }
 
+    /**
+     * Matches protocol variants with a version number equal to or greater than the specified version.
+     *
+     * @param major the minimum major version.
+     * @param minor the minimum minor version if the major version is equal to the minimum.
+     */
     public static ProtocolVariantFilter minimumVersion(final int major, final int minor) {
         return new SafeFilter() {
             @Override
@@ -132,6 +189,13 @@ public class ProtocolVariantFilters {
             }
         };
     }
+
+    /**
+     * Matches protocol variants with a version number equal to or greater than the specified protocol variant.
+     *
+     * @param protocolVariant the full name of a protocol variant (e.g. <code>TLSv1.2</code>), which will be parsed and used as the base
+     *            version number.
+     */
 
     public static ProtocolVariantFilter minimumVersion(final String protocolVariant) {
         final ProtocolVariant pv = new ProtocolVariantParserImpl().parse(protocolVariant);
@@ -142,9 +206,9 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches any cipher suites not matched by a specified filter.
-     * 
-     * @param filter the filter to negate.
+     * Matches any protocol variants not matched by a specified filter.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the negated filter is safe.
      */
     public static ProtocolVariantFilter not(final ProtocolVariantFilter filter) {
         return new ProtocolVariantFilter() {
@@ -161,7 +225,9 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches any cipher suites matched by any of the specified filters.
+     * Matches any protocol variants matched by any of the specified filters.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the first filter combines is safe.
      */
     public static ProtocolVariantFilter or(final ProtocolVariantFilter... filters) {
         return new ProtocolVariantFilter() {
@@ -183,7 +249,9 @@ public class ProtocolVariantFilters {
     }
 
     /**
-     * Matches any cipher suites matched by all of the specified filters.
+     * Matches any protocol variants matched by all of the specified filters.
+     * <p>
+     * <b>Safety:</b> the filter produced is safe iff the first filter combines is safe.
      */
     public static ProtocolVariantFilter and(final ProtocolVariantFilter... filters) {
         return new ProtocolVariantFilter() {
