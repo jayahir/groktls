@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 
-
 public interface ItemFilter<I extends NamedItem> {
     /**
      * The result of applying a filter to a set of cipher suites.
@@ -47,10 +46,8 @@ public interface ItemFilter<I extends NamedItem> {
     /**
      * Filters and orders a set of cipher suites provided by a TLS implementation using the criteria in this filter.
      * 
-     * @param supportedCipherSuites
-     *            the set of cipher suites supported to match against.
-     * @param defaultCipherSuites
-     *            the default cipher suites, which should be a subset of the supported cipher suites.
+     * @param supportedCipherSuites the set of cipher suites supported to match against.
+     * @param defaultCipherSuites the default cipher suites, which should be a subset of the supported cipher suites.
      * @return the result of applying this filter to the provided cipher suites.
      */
     public FilterResult<I> filter(List<String> supportedCipherSuites, List<String> defaultCipherSuites);
@@ -58,10 +55,8 @@ public interface ItemFilter<I extends NamedItem> {
     /**
      * Filters and orders a set of cipher suites provided by a TLS implementation using the criteria in this filter.
      * 
-     * @param supportedCipherSuites
-     *            the set of cipher suites supported to match against.
-     * @param defaultCipherSuites
-     *            the default cipher suites, which should be a subset of the supported cipher suites.
+     * @param supportedCipherSuites the set of cipher suites supported to match against.
+     * @param defaultCipherSuites the default cipher suites, which should be a subset of the supported cipher suites.
      * @return the result of applying this filter to the provided cipher suites.
      */
     public FilterResult<I> filter(String[] supportedCipherSuites, String[] defaultCipherSuites);
@@ -69,8 +64,7 @@ public interface ItemFilter<I extends NamedItem> {
     /**
      * Filters and orders a set of cipher suites provided by a TLS implementation using the criteria in this filter.
      * 
-     * @param context
-     *            an initialised {@link SSLContext}, from which the {@link SSLContext#getSupportedSSLParameters() supported} and
+     * @param context an initialised {@link SSLContext}, from which the {@link SSLContext#getSupportedSSLParameters() supported} and
      *            {@link SSLContext#getDefaultSSLParameters() default} {@link SSLParameters#getCipherSuites() cipher suites will be
      *            obtained}.
      * @return the result of applying this filter to the cipher suites provided by the SSLContext.

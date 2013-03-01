@@ -25,13 +25,13 @@ public class InteractiveFilterSpecTester {
 
         final boolean cs = (args.length == 0) || (!args[0].startsWith("proto") && !args[0].startsWith("pv"));
 
-        SSLContext ctx = SSLContext.getInstance("TLS");
+        final SSLContext ctx = SSLContext.getInstance("TLS");
         ctx.init(new KeyManager[0], new TrustManager[0], null);
 
-        GrokTLS g = new GrokTLS();
-        ItemFilterSpecParser<?> sp = cs ? g.createCipherSuiteFilterSpecParser() : g.createProtocolVariantFilterSpecParser();
+        final GrokTLS g = new GrokTLS();
+        final ItemFilterSpecParser<?> sp = cs ? g.createCipherSuiteFilterSpecParser() : g.createProtocolVariantFilterSpecParser();
 
-        BufferedReader con = new BufferedReader(new InputStreamReader(System.in));
+        final BufferedReader con = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.printf("Interactive %s filter spec tester.%n", cs ? "cipher suite" : "protocol variant");
         System.out.println("Enter a blank line to exit.");
@@ -42,10 +42,10 @@ public class InteractiveFilterSpecTester {
                 return;
             }
             try {
-                ItemFilter<?> filter = sp.parse(input);
-                FilterResult<?> result = filter.filter(ctx);
+                final ItemFilter<?> filter = sp.parse(input);
+                final FilterResult<?> result = filter.filter(ctx);
                 dump(cs, result);
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
             System.out.println();
@@ -71,7 +71,7 @@ public class InteractiveFilterSpecTester {
 
     private static void dumpProtocolVariants(final FilterResult<ProtocolVariant> result) {
         System.out.printf("%-20s %-8s %-5s %-3s %-6s %s%n", "Variant", "Family", "Major", "Minor", "Pseudo", "Unsafe");
-        for (ProtocolVariant c : result.getIncluded()) {
+        for (final ProtocolVariant c : result.getIncluded()) {
             System.out.printf(PV_OUTPUT_FORMAT,
                               c.getName(),
                               c.getFamily(),
@@ -95,7 +95,7 @@ public class InteractiveFilterSpecTester {
                           "Size",
                           "Unsafe");
 
-        for (CipherSuite c : result.getIncluded()) {
+        for (final CipherSuite c : result.getIncluded()) {
             if (c.isSignalling()) {
                 System.out.println(c.getName());
             } else {

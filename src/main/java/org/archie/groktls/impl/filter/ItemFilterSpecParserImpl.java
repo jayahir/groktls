@@ -15,7 +15,7 @@ public abstract class ItemFilterSpecParserImpl<I extends NamedItem, F extends Fi
 
     @Override
     public final ItemFilter<I> parse(final String filterSpec) {
-        ItemFilterBuilderImpl<I> b = createFilterBuilder();
+        final ItemFilterBuilderImpl<I> b = createFilterBuilder();
 
         final String[] parts = filterSpec.split("[:,]");
         for (String part : parts) {
@@ -59,8 +59,8 @@ public abstract class ItemFilterSpecParserImpl<I extends NamedItem, F extends Fi
 
         final String[] specParts = spec.split("\\+");
         final List<F> filters = new ArrayList<F>(specParts.length);
-        for (String subpart : specParts) {
-            F filter = createFilter(subpart);
+        for (final String subpart : specParts) {
+            final F filter = createFilter(subpart);
             if (filter == null) {
                 throw new IllegalArgumentException(String.format("Could not understand ciphersuite spec part %s%s",
                                                                  subpart,

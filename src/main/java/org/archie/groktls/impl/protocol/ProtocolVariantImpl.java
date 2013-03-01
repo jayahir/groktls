@@ -77,7 +77,7 @@ public class ProtocolVariantImpl implements ProtocolVariant {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ProtocolVariantImpl other = (ProtocolVariantImpl) obj;
+        final ProtocolVariantImpl other = (ProtocolVariantImpl) obj;
         if (this.name == null) {
             if (other.name != null) {
                 return false;

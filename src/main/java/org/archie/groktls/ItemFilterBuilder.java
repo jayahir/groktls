@@ -39,11 +39,9 @@ public interface ItemFilterBuilder<I extends NamedItem> {
 
         /**
          * Checks if this filter matches an individual cipher suite.
-         *
-         * @param item
-         *            the {@link CipherSuite} to check.
-         * @param defaults
-         *            the set of default cipher suites provided to the {@link CipherSuiteFilter#filter(java.util.List, java.util.List)
+         * 
+         * @param item the {@link CipherSuite} to check.
+         * @param defaults the set of default cipher suites provided to the {@link CipherSuiteFilter#filter(java.util.List, java.util.List)
          *            filter} when it is evaluated.
          * @param result TODO
          * @return <code>true</code> iff the cipher suite matches the criteria of this filter.
@@ -54,7 +52,7 @@ public interface ItemFilterBuilder<I extends NamedItem> {
     /**
      * Produces a {@link CipherSuiteFilter} containing the operations applied to this builder.<br>
      * After construction, the internal state of the builder is <b>not</b> reset.
-     *
+     * 
      * @return the newly constructed {@link CipherSuiteFilter}.
      */
     public ItemFilter<I> build();

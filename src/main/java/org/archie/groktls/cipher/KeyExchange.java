@@ -13,7 +13,7 @@ public interface KeyExchange {
 
     /**
      * Checks whether this key exchange algorithm has export limitations.
-     *
+     * 
      * @return <code>true</code> iff the key exchange has export limits.
      */
     public boolean isExport();

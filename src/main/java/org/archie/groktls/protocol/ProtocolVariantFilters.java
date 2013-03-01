@@ -143,9 +143,8 @@ public class ProtocolVariantFilters {
 
     /**
      * Matches any cipher suites not matched by a specified filter.
-     *
-     * @param filter
-     *            the filter to negate.
+     * 
+     * @param filter the filter to negate.
      */
     public static ProtocolVariantFilter not(final ProtocolVariantFilter filter) {
         return new ProtocolVariantFilter() {
@@ -173,7 +172,7 @@ public class ProtocolVariantFilters {
 
             @Override
             public boolean matches(final ProtocolVariant item, final Set<ProtocolVariant> defaults) {
-                for (ProtocolVariantFilter filter : filters) {
+                for (final ProtocolVariantFilter filter : filters) {
                     if (filter.matches(item, defaults)) {
                         return true;
                     }
@@ -195,7 +194,7 @@ public class ProtocolVariantFilters {
 
             @Override
             public boolean matches(final ProtocolVariant item, final Set<ProtocolVariant> defaults) {
-                for (ProtocolVariantFilter filter : filters) {
+                for (final ProtocolVariantFilter filter : filters) {
                     if (!filter.matches(item, defaults)) {
                         return false;
                     }

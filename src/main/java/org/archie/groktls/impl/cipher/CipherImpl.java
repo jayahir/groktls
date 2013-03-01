@@ -44,22 +44,22 @@ public class CipherImpl implements Cipher {
     static {
         STRENGTHS.put("3DES_EDE", 112);
     }
-    
+
     public static final CipherImpl CIPHER_NULL = new CipherImpl("NULL", "NULL", null, 0);
 
     public static final int DEFAULT = -1;
 
-    private String fullName;
+    private final String fullName;
 
-    private String algorithm;
+    private final String algorithm;
 
-    private String mode;
+    private final String mode;
 
-    private int keySize;
+    private final int keySize;
 
-    private int strength;
+    private final int strength;
 
-    public CipherImpl(String fullName, String algorithm, final String mode, final int keySize) {
+    public CipherImpl(final String fullName, final String algorithm, final String mode, final int keySize) {
         this.fullName = fullName;
         this.algorithm = dealias(algorithm);
         this.mode = dealias(mode);
@@ -67,7 +67,7 @@ public class CipherImpl implements Cipher {
         this.strength = applyStrength(algorithm, this.keySize);
     }
 
-    private static int applyStrength(String algo, int keySize) {
+    private static int applyStrength(final String algo, final int keySize) {
         if (STRENGTHS.containsKey(algo)) {
             return STRENGTHS.get(algo);
         }
@@ -84,63 +84,76 @@ public class CipherImpl implements Cipher {
         return keySize;
     }
 
+    @Override
     public String getName() {
-        return fullName;
+        return this.fullName;
     }
 
+    @Override
     public String getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
+    @Override
     public String getMode() {
-        return mode;
+        return this.mode;
     }
 
+    @Override
     public int getKeySize() {
-        return keySize;
+        return this.keySize;
     }
-    
+
+    @Override
     public int getStrength() {
-        return strength;
+        return this.strength;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
-        result = prime * result + keySize;
-        result = prime * result + ((mode == null) ? 0 : mode.hashCode());
+        result = (prime * result) + ((this.algorithm == null) ? 0 : this.algorithm.hashCode());
+        result = (prime * result) + this.keySize;
+        result = (prime * result) + ((this.mode == null) ? 0 : this.mode.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        CipherImpl other = (CipherImpl) obj;
-        if (algorithm == null) {
-            if (other.algorithm != null)
+        }
+        final CipherImpl other = (CipherImpl) obj;
+        if (this.algorithm == null) {
+            if (other.algorithm != null) {
                 return false;
-        } else if (!algorithm.equals(other.algorithm))
+            }
+        } else if (!this.algorithm.equals(other.algorithm)) {
             return false;
-        if (keySize != other.keySize)
+        }
+        if (this.keySize != other.keySize) {
             return false;
-        if (mode == null) {
-            if (other.mode != null)
+        }
+        if (this.mode == null) {
+            if (other.mode != null) {
                 return false;
-        } else if (!mode.equals(other.mode))
+            }
+        } else if (!this.mode.equals(other.mode)) {
             return false;
+        }
         return true;
     }
-    
+
     @Override
     public String toString() {
-        return String.format("%s: (%s,%s,%s)", fullName, algorithm, mode, keySize);
+        return String.format("%s: (%s,%s,%s)", this.fullName, this.algorithm, this.mode, this.keySize);
     }
 
 }

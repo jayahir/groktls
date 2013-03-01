@@ -28,8 +28,8 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
 
         @Override
         public String[] getIncludedNames() {
-            List<String> names = new ArrayList<String>();
-            for (I c : this.included) {
+            final List<String> names = new ArrayList<String>();
+            for (final I c : this.included) {
                 names.add(c.getName());
             }
             return names.toArray(new String[names.size()]);
@@ -60,11 +60,11 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
 
     @Override
     public FilterResult<I> filter(final List<String> supportedItems, final List<String> defaultItems) {
-        Set<I> supported = parse(supportedItems);
-        Set<I> defaults = parse(defaultItems);
+        final Set<I> supported = parse(supportedItems);
+        final Set<I> defaults = parse(defaultItems);
 
-        FilterResultImpl<I> result = new FilterResultImpl<I>();
-        for (Step<I> step : this.steps) {
+        final FilterResultImpl<I> result = new FilterResultImpl<I>();
+        for (final Step<I> step : this.steps) {
             step.apply(result, supported, defaults);
         }
         return result;

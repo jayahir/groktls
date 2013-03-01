@@ -72,8 +72,8 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
 
     @Override
     public Set<CipherSuite> parse(final Collection<String> ciphers) {
-        Set<CipherSuite> parsed = new LinkedHashSet<CipherSuite>();
-        for (String cipherSuite : ciphers) {
+        final Set<CipherSuite> parsed = new LinkedHashSet<CipherSuite>();
+        for (final String cipherSuite : ciphers) {
             final CipherSuite cs = parse(cipherSuite);
             if (cs != null) {
                 parsed.add(cs);
@@ -91,7 +91,7 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
         if (CipherImpl.CIPHER_NULL.getAlgorithm().equals(cipherSpec)) {
             return CipherImpl.CIPHER_NULL;
         }
-        CipherImpl cipher = parseAlgoSizeCipher(cipherSpec);
+        final CipherImpl cipher = parseAlgoSizeCipher(cipherSpec);
 
         return cipher;
     }
@@ -113,7 +113,7 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
                     keysizeStr = keysizeStr.substring(1);
                     final int keySize = Integer.parseInt(keysizeStr);
                     return new CipherImpl(cipherSpec, algo, mode, keySize);
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                 }
             }
             return new CipherImpl(cipherSpec, algo, mode, CipherImpl.DEFAULT);
@@ -161,7 +161,7 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
                 exportVariant = null;
             }
 
-            KeyExchangeImpl keyExchange = new KeyExchangeImpl(algos, baseExch, baseAuth, exported, exportVariant);
+            final KeyExchangeImpl keyExchange = new KeyExchangeImpl(algos, baseExch, baseAuth, exported, exportVariant);
             // System.err.println(keyExchange);
             return keyExchange;
         }
@@ -183,7 +183,7 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
                 exportVariant = null;
             }
 
-            KeyExchangeImpl keyExchange = new KeyExchangeImpl(algos, baseAlg, baseAlg, exported, exportVariant);
+            final KeyExchangeImpl keyExchange = new KeyExchangeImpl(algos, baseAlg, baseAlg, exported, exportVariant);
             // System.err.println(keyExchange);
             return keyExchange;
         }

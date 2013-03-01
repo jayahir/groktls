@@ -54,8 +54,8 @@ public class CipherSuiteFilters {
 
         @Override
         public int compare(final CipherSuite o1, final CipherSuite o2) {
-            Cipher c1 = o1.getCipher();
-            Cipher c2 = o2.getCipher();
+            final Cipher c1 = o1.getCipher();
+            final Cipher c2 = o2.getCipher();
             if (c1 == c2) {
                 return 0;
             } else if (c2 == null) {
@@ -74,8 +74,8 @@ public class CipherSuiteFilters {
 
         @Override
         public int compare(final CipherSuite o1, final CipherSuite o2) {
-            Cipher c1 = o1.getCipher();
-            Cipher c2 = o2.getCipher();
+            final Cipher c1 = o1.getCipher();
+            final Cipher c2 = o2.getCipher();
             if (c1 == c2) {
                 return 0;
             } else if (c2 == null) {
@@ -103,7 +103,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches a single cipher suite by name. The provided cipher suite name is not parsed and is directly matched.
-     *
+     * 
      * @param cipherSuite the cipher suite name to match.
      */
     public static CipherFilter cipherSuite(final String cipherSuite) {
@@ -129,7 +129,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified encryption (cipher) algorithm.
-     *
+     * 
      * @param algorithm the normalised name of the encryption algorithm (e.g. <code>AES, 3DES, RC4, NULL</code>).
      */
     public static CipherFilter encryption(final String algorithm) {
@@ -143,7 +143,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specifed encryption (cipher) mode.
-     *
+     * 
      * @param mode the name of the cipher mode to match (e.g. <code>CBC, GCM</code>).
      */
     public static CipherFilter encryptionMode(final String mode) {
@@ -157,7 +157,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use encryption (a cipher) with key lengths of a minimum size.
-     *
+     * 
      * @param minSize the minimum number of bits in the cipher key length (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionKeySize(final int minSize) {
@@ -171,7 +171,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use encryption (a cipher) with effective key strengths of a minimum size.
-     *
+     * 
      * @param minSize the minimum number of bits in the cipher strength (e.g. <code>128</code>)
      */
     public static CipherFilter encryptionStrength(final int minSize) {
@@ -185,7 +185,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified authentication algorithm.
-     *
+     * 
      * @param algorithm the normalised name of the authentication algorithm (e.g. <code>DSS, RSA, NULL</code>).
      */
     public static CipherFilter authentication(final String algorithm) {
@@ -199,7 +199,7 @@ public class CipherSuiteFilters {
 
     /**
      * Matches cipher suites that use a specified key exchange algorithm.
-     *
+     * 
      * @param algorithm the normalised name of the key exchange algorithm (e.g. <code>RSA, DH, DHE, NULL</code>).
      */
     public static CipherFilter keyExchange(final String algorithm) {
@@ -215,7 +215,7 @@ public class CipherSuiteFilters {
      * Matches cipher suites that use a specified MAC algorithm algorithm. <br>
      * The name matched against is the one used in the cipher suite name (e.g. the underlying hash where <code>HMAC</code> is used, or the
      * MAC algorithm if something other than <code>HMAC</code> is used).
-     *
+     * 
      * @param algorithm the normalised name of the MAC algorithm (e.g. <code>SHA, SHA256</code>).
      */
     public static CipherFilter mac(final String algorithm) {
@@ -286,7 +286,7 @@ public class CipherSuiteFilters {
      * <li>It does not use <code>EXPORT</code> grade {@link CipherSuite#getCipher() encryption/cipher}</li>
      * <li>It does not use the <code>MD5</code> {@link CipherSuite#getMac() digest algorithm}</li>
      * </ul>
-     *
+     * 
      * @param cipher the cipher suite to check.
      * @return <code>true</code> iff the cipher suite is safe to use.
      */
@@ -339,7 +339,7 @@ public class CipherSuiteFilters {
                 if (cipher.getCipher() == null) {
                     return false;
                 }
-                Cipher c = cipher.getCipher();
+                final Cipher c = cipher.getCipher();
                 return ((c.getKeySize() > 128) || ((c.getKeySize() == 128) && "AES".equals(c.getAlgorithm())));
             }
         };
@@ -356,7 +356,7 @@ public class CipherSuiteFilters {
                 if (cipher.getCipher() == null) {
                     return false;
                 }
-                Cipher c = cipher.getCipher();
+                final Cipher c = cipher.getCipher();
                 return (c.getKeySize() == 128) && !"AES".equals(c.getAlgorithm());
             }
         };
@@ -473,7 +473,7 @@ public class CipherSuiteFilters {
      * Matches any cipher suites not matched by a specified filter.
      * <p>
      * <b>Safety:</b> the filter produced is safe iff the negated filter is safe.
-     *
+     * 
      * @param filter the filter to negate.
      */
     public static CipherFilter not(final CipherFilter filter) {
@@ -504,7 +504,7 @@ public class CipherSuiteFilters {
 
             @Override
             public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
-                for (Filter<CipherSuite> filter : filters) {
+                for (final Filter<CipherSuite> filter : filters) {
                     if (filter.matches(cipher, defaults)) {
                         return true;
                     }
@@ -528,7 +528,7 @@ public class CipherSuiteFilters {
 
             @Override
             public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
-                for (Filter<CipherSuite> filter : filters) {
+                for (final Filter<CipherSuite> filter : filters) {
                     if (!filter.matches(cipher, defaults)) {
                         return false;
                     }

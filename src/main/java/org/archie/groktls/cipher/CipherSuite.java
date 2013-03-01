@@ -16,17 +16,17 @@ public interface CipherSuite extends NamedItem {
     /**
      * Obtains the key exchange algorithms used in the cipher suite.
      */
-	public KeyExchange getKeyExchange();
+    public KeyExchange getKeyExchange();
 
     /**
      * Obtains the cipher algorithms used for confidentiality in the cipher suite.
      */
-	public Cipher getCipher();
+    public Cipher getCipher();
 
     /**
      * Obtains the message authentication algorithms used in the cipher suite.
      */
-	public Mac getMac();
+    public Mac getMac();
 
     @Override
     public boolean equals(Object obj);

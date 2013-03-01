@@ -34,9 +34,9 @@ public class MacImpl implements Mac {
         HASH_SIZES.put("SHA384", 384);
     }
 
-    private String fullName;
-    private String algorithm;
-    private int size;
+    private final String fullName;
+    private final String algorithm;
+    private final int size;
 
     public MacImpl(final String fullName, final String algorithm) {
         this.fullName = fullName;
@@ -44,56 +44,65 @@ public class MacImpl implements Mac {
         this.size = detectSize(algorithm);
     }
 
-    private static int detectSize(String algorithm) {
+    private static int detectSize(final String algorithm) {
         if (HASH_SIZES.containsKey(algorithm)) {
             return HASH_SIZES.get(algorithm);
         }
         return -1;
     }
 
+    @Override
     public String getName() {
-        return fullName;
+        return this.fullName;
     }
 
+    @Override
     public String getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
+    @Override
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
-        result = prime * result + size;
+        result = (prime * result) + ((this.algorithm == null) ? 0 : this.algorithm.hashCode());
+        result = (prime * result) + this.size;
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        MacImpl other = (MacImpl) obj;
-        if (algorithm == null) {
-            if (other.algorithm != null)
+        }
+        final MacImpl other = (MacImpl) obj;
+        if (this.algorithm == null) {
+            if (other.algorithm != null) {
                 return false;
-        } else if (!algorithm.equals(other.algorithm))
+            }
+        } else if (!this.algorithm.equals(other.algorithm)) {
             return false;
-        if (size != other.size)
+        }
+        if (this.size != other.size) {
             return false;
+        }
         return true;
     }
-    
+
     @Override
     public String toString() {
-        return String.format("%s: (%s,%s)", fullName, algorithm, size);
+        return String.format("%s: (%s,%s)", this.fullName, this.algorithm, this.size);
     }
 
 }

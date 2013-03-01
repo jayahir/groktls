@@ -11,7 +11,6 @@ import org.archie.groktls.protocol.ProtocolVariant;
 
 public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
 
-
     public static final ProtocolVariant TLSv1 = new ProtocolVariantImpl("TLSv1", "TLS", 3, 1, null);
     public static final ProtocolVariant SSLv3 = new ProtocolVariantImpl("SSLv3", "SSL", 3, 0, null);
 
@@ -19,8 +18,8 @@ public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
 
     @Override
     public Set<ProtocolVariant> parse(final Collection<String> protocolVariant) {
-        Set<ProtocolVariant> parsed = new LinkedHashSet<ProtocolVariant>();
-        for (String variant : protocolVariant) {
+        final Set<ProtocolVariant> parsed = new LinkedHashSet<ProtocolVariant>();
+        for (final String variant : protocolVariant) {
             final ProtocolVariant pv = parse(variant);
             if (pv != null) {
                 parsed.add(pv);
@@ -32,12 +31,12 @@ public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
 
     @Override
     public ProtocolVariant parse(final String protocolVariant) {
-        Matcher matcher = PROTOCOL_VARIANT.matcher(protocolVariant);
+        final Matcher matcher = PROTOCOL_VARIANT.matcher(protocolVariant);
         if (matcher.matches()) {
-            String family = matcher.group(1);
-            String majorVer = matcher.group(2);
-            String minorVer = matcher.group(4);
-            String pseudoProtocol = matcher.group(5);
+            final String family = matcher.group(1);
+            final String majorVer = matcher.group(2);
+            final String minorVer = matcher.group(4);
+            final String pseudoProtocol = matcher.group(5);
 
             int major;
             int minor = 0;
@@ -46,7 +45,7 @@ public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
                 if (minorVer != null) {
                     minor = Integer.parseInt(minorVer);
                 }
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new IllegalArgumentException(String.format("Could not understand protocol variant %s", protocolVariant));
             }
             if ("TLS".equals(family)) {
@@ -58,6 +57,5 @@ public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
         }
         return null;
     }
-
 
 }

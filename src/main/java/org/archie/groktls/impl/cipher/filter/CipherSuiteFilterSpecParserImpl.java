@@ -146,7 +146,7 @@ public class CipherSuiteFilterSpecParserImpl extends ItemFilterSpecParserImpl<Ci
                     try {
                         final int keysize = Integer.parseInt(keysizeStr);
                         filters.add(encryptionKeySize(keysize));
-                    } catch (NumberFormatException e) {
+                    } catch (final NumberFormatException e) {
                         throw new IllegalArgumentException(String.format("Could not understand encryption algorithm spec %s", part));
                     }
                 }

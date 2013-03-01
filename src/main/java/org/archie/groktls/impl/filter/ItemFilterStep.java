@@ -3,15 +3,18 @@ package org.archie.groktls.impl.filter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.archie.groktls.NamedItem;
 import org.archie.groktls.ItemFilterBuilder.Filter;
+import org.archie.groktls.NamedItem;
 import org.archie.groktls.impl.filter.ItemFilterImpl.FilterResultImpl;
 import org.archie.groktls.impl.filter.ItemFilterImpl.Step;
 
 public abstract class ItemFilterStep<I extends NamedItem> implements Step<I> {
 
     public static enum Op {
-        ADD, MOVE_TO_END, DELETE, BLACKLIST
+        ADD,
+        MOVE_TO_END,
+        DELETE,
+        BLACKLIST
     }
 
     private final Op op;
@@ -29,7 +32,7 @@ public abstract class ItemFilterStep<I extends NamedItem> implements Step<I> {
     public void apply(final FilterResultImpl<I> result, final Set<I> supported, final Set<I> defaults) {
         final Set<I> ciphers = new LinkedHashSet<I>();
 
-        for (I cipher : supported) {
+        for (final I cipher : supported) {
             // Supported items are guarded by safety of filter
             if (this.filter.isSafe() && !isSafe(cipher)) {
                 continue;
@@ -40,7 +43,7 @@ public abstract class ItemFilterStep<I extends NamedItem> implements Step<I> {
         }
         // Once unsafe items are matched, they can be matched by any filter
         // e.g. UNSAFE:-eNULL
-        for (I cipher : result.included) {
+        for (final I cipher : result.included) {
             if (this.filter.matches(cipher, defaults)) {
                 ciphers.add(cipher);
             }
