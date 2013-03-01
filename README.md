@@ -123,8 +123,8 @@ e.g.:
   * `CBC` and `GCM` encryption modes
   * `SHA`, `SHA256` and `SHA384` mac/digest
 * `SCSV` - matches any signalling cipher suite values (e.g. `TLS_EMPTY_RENEGOTIATION_INFO_SCSV`)
-* `HIGH` - matches cipher suites with strong encryption - currently AES >= 128 bit encryption and any other algorithm with key length > 128 bits
-* `MEDIUM` - matches cipher suites using medium strength encryption - currently any 128 bit encryption algorithm other than AES
+* `HIGH` - matches cipher suites with strong encryption - currently `AES` >= 128 bit encryption and any other algorithm with key length > 128 bits
+* `MEDIUM` - matches cipher suites using medium strength encryption - currently any 128 bit encryption algorithm other than `AES`
 * `LOW` - matches cipher suites using low strength encryption - currently any encryption algorithm with < 128 bit key length
 * `EXPORT` or `EXP` - matches cipher suites with export weakened key exchange or encryption. Will not match anything unless `UNSAFE` is also used.
 * `SUITEB128` - matches cipher suites using algorithms approved for use in TLS by NSA Suite B with a 128 bit minimum security
