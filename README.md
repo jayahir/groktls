@@ -26,16 +26,17 @@ GrokTLS is released under the [The Apache Software License, Version 2.0](http://
 
 ### Unsafe Cipher Suites
 
-By default GrokTLS excludes unsafe cipher suites and protocol variants, and unless you explicitly include them they aren't matched by filter rules.
+By default GrokTLS excludes unsafe cipher suites and protocol variants, and unless you explicitly include them they aren't matched by filter rules, with the exception of filter rules explicitly notes as matching unsafe filters (such as `SUPPORTED`).
+The exception to this rule is that unsafe items that have already been matched in a filter will be matched by subsequent safe filters.
 
 Unsafe cipher suites are those that have:
 * `NULL` encryption
 * `NULL` key exchange
 * `NULL` or `anon` authentication
 * `NULL` mac/digest
-* EXPORT grade key exchange or encryption
+* `EXPORT` grade key exchange or encryption
 
-Unsafe protocol variants are SSLv2 and below.
+Unsafe protocol variants are `SSLv2` and below.
 
 ### Parsing
 
@@ -90,6 +91,20 @@ String[] protocols = pvFilter.filter(sslContext).getIncludedNames();
 
 ### High Level Syntax
 
+Filters consist of one or more parts, separated by a `:` or `,`.
+Each part is either a single filter expression, or a concatenation of multiple filter expressions (a logical _and_ operation) using a `+`.
+Parts are of the following types, distinguished by a prefix character:
+* (no prefix) - add matched items. Items already matched remain in the place they were matched, new items are added to the end.
+* `+` - add matched items. Items already matched are removed from the order and added again at the end.
+* `-` - remove matched items. Items may be re-added by subsequent filter parts.
+* `!` - remove matched items and blacklist them. Items will not be re-added, even if matched by subsequent filter parts.
+
+e.g.:
+* `EXPR1:EXPR2` - all items matching `EXPR1`, followed by items matching `EXPR2`
+* `EXPR1+EXPR2` - all items matching `EXPR1` and `EXPR2`
+* `EXPR1:+EXPR2` - all items matching `EXPR1`, with any items matching `EXPR2` moved to the end of the list
+* `EXPR1:-EXPR2` - all items matching `EXPR1`, except the items matching `EXPR2`
+* `EXPR1:!EXPR2:EXPR3` - all items matching `EXPR1`, except the items matching `EXPR2`, followed by items matching `EXPR3` that are not matched by `EXPR2`
 
 ### Common Filters
 
