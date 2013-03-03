@@ -87,6 +87,24 @@ context.init(...);
 String[] protocols = pvFilter.filter(sslContext).getIncludedNames();
 ```
 
+### Interactive Cipher Suite Filter Testing
+
+```
+java -jar groktls.jar
+
+> eAES+kDHE
+8 matches, 0 excluded, 0 blacklisted. 
+Cipher                                   Kx       Au       Enc        Mode Key Str   Mac    Size Unsafe
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA256      DHE      RSA      AES        CBC  256 (256) SHA256  256 
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA256      DHE      DSS      AES        CBC  256 (256) SHA256  256 
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA         DHE      RSA      AES        CBC  256 (256) SHA     160 
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA         DHE      DSS      AES        CBC  256 (256) SHA     160 
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA256      DHE      RSA      AES        CBC  128 (128) SHA256  256 
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA256      DHE      DSS      AES        CBC  128 (128) SHA256  256 
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA         DHE      RSA      AES        CBC  128 (128) SHA     160 
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA         DHE      DSS      AES        CBC  128 (128) SHA     160 
+```
+
 ## Filter Syntax
 
 ### High Level Syntax
