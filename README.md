@@ -161,7 +161,7 @@ e.g.:
 ### Cipher Suite Orderings
 
 * `@STRENGTH` - orders matched cipher suites by the effective key length (taking into account known vulnerabilities)
-* `@LENGTH` - orders matched cipher suites by the key length
+* `@KEYLENGTH` - orders matched cipher suites by the key length
 
 All filter expressions that take an algorithm accept the value `NULL` to match cipher suites with `NULL` or `anon` values.
 
