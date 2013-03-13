@@ -24,7 +24,7 @@ GrokTLS is released under the [The Apache Software License, Version 2.0](http://
 
 ## Usage
 
-### Unsafe Cipher Suites
+### Unsafe Cipher Suites and Protocol Variants
 
 By default GrokTLS excludes unsafe cipher suites and protocol variants, and unless you explicitly include them they aren't matched by filter rules, with the exception of filter rules explicitly notes as matching unsafe filters (such as `SUPPORTED`).
 The exception to this rule is that unsafe items that have already been matched in a filter will be matched by subsequent safe filters.
@@ -126,11 +126,13 @@ e.g.:
 
 ### Common Filters
 
-* `SUPPORTED` - matches all supported cipher suites, including unsafe cipher suites
-* `ALL` - matches all safe supported cipher suites
-* `COMPLEMENTOFALL`/`UNSAFE` - matches all supported cipher suites not matched by `ALL`
-* `DEFAULT` - matches all safe default cipher suites
-* `COMPLEMENTOFDEFAULT` - matches all safe supported cipher suites (e.g. `ALL`) not matched by `DEFAULT`
+These filters can be applied to cipher suites or protocol variants.
+
+* `SUPPORTED` - matches all supported items, including those classified as unsafe
+* `ALL` - matches all safe supported items
+* `COMPLEMENTOFALL`/`UNSAFE` - matches all supported items not matched by `ALL`
+* `DEFAULT` - matches all safe default items
+* `COMPLEMENTOFDEFAULT` - matches all safe supported items (e.g. `ALL`) not matched by `DEFAULT`
 
 ### Cipher Suite Filters
 
@@ -158,12 +160,12 @@ e.g.:
 * `e_MODE` - e.g. `e_GCM` - matches cipher suites using the specified encryption mode
 * `e_LEN_MODE` - e.g. `e_128_GCM` - matches cipher suites using the any encryption algorithm in the specified mode with at least the specified key length
 
+All filter expressions that take an algorithm accept the value `NULL` to match cipher suites with `NULL` or `anon` values.
+
 ### Cipher Suite Orderings
 
 * `@STRENGTH` - orders matched cipher suites by the effective key length (taking into account known vulnerabilities)
 * `@KEYLENGTH` - orders matched cipher suites by the key length
-
-All filter expressions that take an algorithm accept the value `NULL` to match cipher suites with `NULL` or `anon` values.
 
 ### Protocol Variant Filters
 
