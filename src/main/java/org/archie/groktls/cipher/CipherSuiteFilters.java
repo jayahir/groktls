@@ -90,7 +90,7 @@ public class CipherSuiteFilters {
     /**
      * Produces a comparator for {@link CipherSuite}s that will order them by {@link Cipher#getKeySize() key length}.
      * <p>
-     * <em>Filter spec usage:</em> <code>@LENGTH</code>.
+     * <em>Filter spec usage:</em> <code>@KEYLENGTH</code>.
      */
     public static Comparator<? super CipherSuite> byKeyLength() {
         return KEY_LENGTH_COMPARATOR;
