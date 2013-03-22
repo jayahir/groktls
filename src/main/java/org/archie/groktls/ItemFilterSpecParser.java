@@ -1,3 +1,18 @@
+/**
+ * Copyright 2013 Tim Whittington
+ *
+ * Licensed under the The Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.archie.groktls;
 
 import java.util.Comparator;
@@ -8,7 +23,7 @@ import org.archie.groktls.protocol.ProtocolVariantFilters;
 
 /**
  * A parser for filter specifications that describe a series of steps
- * 
+ *
  * <p>
  * <h4>General Overview</h4>
  * The filter specifications parsed by this parser generally follow the approach and syntax of the <a
@@ -17,7 +32,7 @@ import org.archie.groktls.protocol.ProtocolVariantFilters;
  * Item filters are built up as a sequence of parts separated by <code>:</code> or <code>,<code> characters, with each part being one of
  * the operations supported by {@link ItemFilterBuilder} applied to an expression that corresponds to a filter over the items to be matched.
  * <p>
- * 
+ *
  * <h4>Operations</h4>
  * The available operations are:
  * <ul>
@@ -25,7 +40,7 @@ import org.archie.groktls.protocol.ProtocolVariantFilters;
  * <li>Items prefixed by a <code>-</code> are {@link #delete(Filter) exclusions}.</li>
  * <li>Items prefixed by a <code>!<code> are {@link #blacklist(Filter) blacklist} operations.</li>
  * <li>Items prefixed by a <code>@</code> are {@link #sort(Comparator) sort} operations</li> </ul>
- * 
+ *
  * Additionally, each part can be made up of individual filters concatenated with a <code>+</code>, representing a logical <code>and</code>
  * over the individual filters to produce a single filter that is used with the specified operation in that step.
  * <p>
