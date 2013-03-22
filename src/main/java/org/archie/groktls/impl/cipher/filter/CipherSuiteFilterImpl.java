@@ -3,6 +3,7 @@ package org.archie.groktls.impl.cipher.filter;
 import java.util.List;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
 import org.archie.groktls.cipher.CipherSuite;
@@ -27,4 +28,13 @@ public class CipherSuiteFilterImpl extends ItemFilterImpl<CipherSuite> {
         return parameters.getCipherSuites();
     }
 
+    @Override
+    protected String[] getDefaults(final SSLEngine engine) {
+        return engine.getEnabledCipherSuites();
+    }
+
+    @Override
+    protected String[] getSupported(final SSLEngine engine) {
+        return engine.getSupportedCipherSuites();
+    }
 }

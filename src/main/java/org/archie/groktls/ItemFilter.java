@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 /**
  * A filter that can be applied to a set of input items (e.g. items or protocol variants).
@@ -73,7 +74,10 @@ public interface ItemFilter<I extends NamedItem> {
     public FilterResult<I> filter(String[] supportedCipherSuites, String[] defaultCipherSuites);
 
     /**
-     * Filters and orders a set of items provided by a TLS implementation using the criteria in this filter.
+     * Filters and orders a set of supported and default items provided by a TLS implementation using the criteria in this filter.
+     * <p>
+     * This will obtain the items directly from the {@link SSLContext}, which on most JVMs will obtain the default settings used for
+     * <em>TLS clients</em>.
      *
      * @param context an {@link SSLContext#init(javax.net.ssl.KeyManager[], javax.net.ssl.TrustManager[], java.security.SecureRandom)
      *            initialised} {@link SSLContext}, from which the {@link SSLContext#getSupportedSSLParameters() supported} and
@@ -81,5 +85,18 @@ public interface ItemFilter<I extends NamedItem> {
      * @return the result of applying this filter to the items provided by the SSLContext.
      */
     public FilterResult<I> filter(SSLContext context);
+
+    /**
+     * Filters and orders a set of supported and default items provided by a TLS implementation using the criteria in this filter.
+     * <p>
+     * This will obtain the items from an {@link SSLEngine} constructed from the provided {@link SSLContext}, which on most JVMs will obtain
+     * the default settings used for <em>TLS servers</em>.
+     *
+     * @param context an {@link SSLContext#init(javax.net.ssl.KeyManager[], javax.net.ssl.TrustManager[], java.security.SecureRandom)
+     *            initialised} {@link SSLContext}, from which the an {@link SSLContext#createSSLEngine() SSLEngine} will be obtained to
+     *            determine the default and supported items.
+     * @return the result of applying this filter to the items provided by the SSLEngine.
+     */
+    public FilterResult<?> filterServer(SSLContext context);
 
 }

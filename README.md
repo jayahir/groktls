@@ -58,7 +58,7 @@ ItemFilterBuilder<CipherSuite> csBuilder = new GrokTLS().createCipherSuiteFilter
 ItemFilter<CipherSuite> csFilter = csBuilder.add(fips()).sort(byEncryptionStrength()).build();
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(...);
-String[] ciphers = csFilter.filter(sslContext).getIncludedNames();
+String[] ciphers = csFilter.filterServer(sslContext).getIncludedNames();
 ```
 
 ```java
@@ -76,7 +76,7 @@ ItemFilterSpecParser<CipherSuite> parser = new GrokTLS().createCipherSuiteFilter
 ItemFilter<CipherSuite> csFilter = parser.parse("FIPS:@STRENGTH");
 SSLContext context = SSLContext.getInstance("TLS");
 context.init(...);
-String[] ciphers = csFilter.filter(sslContext).getIncludedNames();
+String[] ciphers = csFilter.filterServer(sslContext).getIncludedNames();
 ```
 
 ```java

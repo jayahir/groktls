@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
 import org.archie.groktls.ItemFilter;
@@ -81,6 +82,16 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
     public FilterResult<I> filter(final SSLContext context) {
         return filter(getItems(context.getSupportedSSLParameters()), getItems(context.getDefaultSSLParameters()));
     }
+
+    @Override
+    public FilterResult<I> filterServer(final SSLContext context) {
+        SSLEngine engine = context.createSSLEngine();
+        return filter(getDefaults(engine), getSupported(engine));
+    }
+
+    protected abstract String[] getDefaults(SSLEngine engine);
+
+    protected abstract String[] getSupported(SSLEngine engine);
 
     protected abstract String[] getItems(SSLParameters parameters);
 

@@ -42,7 +42,7 @@
 					<instructions>
 						<Main-Class>org.archie.groktls.InteractiveFilterSpecTester</Main-Class>
 						<Export-Package>org.archie.groktls,org.archie.groktls.cipher,org.archie.groktls.protocol</Export-Package>
-						<Import-Package>javax.net.ssl;version="0.0.0"</Import-Package>
+						<Import-Package>javax.net.ssl;version="0.0.0",javax.net;version="0.0.0"</Import-Package>
 						<Bundle-Name>${project.artifactId}</Bundle-Name>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>

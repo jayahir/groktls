@@ -3,6 +3,7 @@ package org.archie.groktls.impl.protocol.filter;
 import java.util.List;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 
 import org.archie.groktls.impl.filter.ItemFilterImpl;
@@ -13,7 +14,7 @@ public class ProtocolVariantFilterImpl extends ItemFilterImpl<ProtocolVariant> {
 
     private final ProtocolVariantParserImpl parser = new ProtocolVariantParserImpl();
 
-    public ProtocolVariantFilterImpl(final List<org.archie.groktls.impl.filter.ItemFilterImpl.Step<ProtocolVariant>> steps) {
+    public ProtocolVariantFilterImpl(final List<Step<ProtocolVariant>> steps) {
         super(steps);
     }
 
@@ -27,4 +28,13 @@ public class ProtocolVariantFilterImpl extends ItemFilterImpl<ProtocolVariant> {
         return this.parser.parse(items);
     }
 
+    @Override
+    protected String[] getDefaults(final SSLEngine engine) {
+        return engine.getEnabledProtocols();
+    }
+
+    @Override
+    protected String[] getSupported(final SSLEngine engine) {
+        return engine.getSupportedProtocols();
+    }
 }
