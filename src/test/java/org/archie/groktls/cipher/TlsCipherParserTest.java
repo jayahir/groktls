@@ -165,7 +165,7 @@ public class TlsCipherParserTest {
 
     @Test
     public void testAdditionalExport1024CipherSuites() {
-        http: // tools.ietf.org/html/draft-ietf-tls-56-bit-ciphersuites-01
+        // http:// tools.ietf.org/html/draft-ietf-tls-56-bit-ciphersuites-01
         check("TLS_RSA_EXPORT1024_WITH_DES_CBC_SHA", "RSA", "RSA", true, "1024", "DES", "CBC", 56, "SHA", 160);
         check("TLS_RSA_EXPORT1024_WITH_RC4_56_SHA", "RSA", "RSA", true, "1024", "RC4", null, 56, "SHA", 160);
         check("TLS_DHE_DSS_EXPORT1024_WITH_DES_CBC_SHA", "DHE", "DSS", true, "1024", "DES", "CBC", 56, "SHA", 160);
