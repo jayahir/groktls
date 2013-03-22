@@ -11,7 +11,7 @@ A Java library for parsing TLS cipher suite and protocol variant names and filte
 - OpenSSL like filter syntax, allowing configuration of filters in applications
 - Filter syntax is compatible with lists of cipher suite names, allowing drop-in enhancement of existing applications
 - Filtering excludes unsafe cipher suites (including export cipher suites) by default, avoiding mistakes
-- Interactive tester application to determine Java VM capabilities and test filters
+- Interactive tester application to determine JRE and JSSE capabilities, and test filters
 - Packaged as an OSGi bundle
 
 ## Licensing
@@ -87,7 +87,31 @@ context.init(...);
 String[] protocols = pvFilter.filter(sslContext).getIncludedNames();
 ```
 
-### Interactive Cipher Suite Filter Testing
+## Interactive Filter and JSSE API Testing
+
+The GrokTLS distribution is an executable jar, providing an interactive tool to analyse the TLS
+ support and JSSE implementation of the JVM invoking it, and to test filter expressions.
+
+### Available Commands
+
+* `-e` - process all commands on the command line immediately, and then exit.
+* `client` - switch to use client TLS defaults (e.g. what an `SSLSocket` would use).
+* `server` - switch to use server TLS defaults (e.g. what an `SSLServerSocket` would use).
+* `engine <Name>` - switch the TLS engine to the specified engine/protocol.
+* `cipher` or `cs` - switch to cipher suite filtering mode.
+* `proto` or `pv` - switch to protocol variant filtering mode.
+* `consistent` - analyse all JSSE APIs and display a report explaining which APIs are consistent with each other.   
+* `FILTERSPEC` - any other command is matched as a filter spec (see below for syntax) and the results of the filter are displayed.
+
+### Examples
+
+```
+java -jar -e groktls.jar consistent
+```
+
+```
+java -jar -e groktls.jar server "engine TLSv1.2" cipher DEFAULT
+```
 
 ```
 java -jar groktls.jar
