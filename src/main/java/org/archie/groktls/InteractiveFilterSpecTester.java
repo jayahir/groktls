@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.crypto.Cipher;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
@@ -70,7 +71,26 @@ public class InteractiveFilterSpecTester {
     }
 
     private void start() throws NoSuchAlgorithmException, KeyManagementException {
+        checkUnrestrictedJce();
         init(null);
+    }
+
+    /**
+     * Check whether unrestricted JCE policy is installed, which will have an effect on which ciphersuites are provided (at least by the
+     * SunJSSE provider).
+     */
+    private void checkUnrestrictedJce() {
+        try {
+            int maxKeyLength = Cipher.getMaxAllowedKeyLength("RC5");
+            if (maxKeyLength != Integer.MAX_VALUE) {
+                System.out.printf("! Unrestricted JCE policy files are not installed.%n");
+                System.out.printf("! Cipher suites may be limited to <= %d bit security (<= %d bit digest/mac).%n%n",
+                                  maxKeyLength,
+                                  (maxKeyLength * 2));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            System.out.printf("Failed to check unrestricted JCE: %s%n", e.getMessage());
+        }
     }
 
     protected void init(final String engine) throws NoSuchAlgorithmException, KeyManagementException {
