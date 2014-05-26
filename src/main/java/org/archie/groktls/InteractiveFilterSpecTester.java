@@ -64,7 +64,6 @@ public class InteractiveFilterSpecTester {
     private boolean ciphers = true;
     private boolean client = true;
     private SSLContext ctx;
-    private SSLEngine engine;
     private final GrokTLS grok = new GrokTLS();
 
     private InteractiveFilterSpecTester() {
@@ -81,7 +80,6 @@ public class InteractiveFilterSpecTester {
             this.ctx = SSLContext.getInstance(engine);
             this.ctx.init(null, null, null);
         }
-        this.engine = this.ctx.createSSLEngine();
     }
 
     private void readAndProcessInput() throws IOException, KeyManagementException, NoSuchAlgorithmException {
@@ -363,7 +361,10 @@ public class InteractiveFilterSpecTester {
         List<Case> cc = new ArrayList<Case>();
         List<Case> pc = new ArrayList<Case>();
 
-        SSLEngine engineFromContext = ctx.createSSLEngine();
+        SSLEngine serverEngine = ctx.createSSLEngine();
+        serverEngine.setUseClientMode(false);
+        SSLEngine clientEngine = ctx.createSSLEngine();
+        clientEngine.setUseClientMode(true);
 
         SSLServerSocketFactory serverSocketFactoryFromContext = ctx.getServerSocketFactory();
         SSLSocketFactory socketFactoryFromContext = ctx.getSocketFactory();
@@ -371,13 +372,21 @@ public class InteractiveFilterSpecTester {
         SSLParameters defaultParamsFromContext = ctx.getDefaultSSLParameters();
         SSLParameters supportedParamsFromContext = ctx.getSupportedSSLParameters();
 
-        cc.add(new Case(protocol, "Enabled Ciphers from Engine", engineFromContext.getEnabledCipherSuites()));
-        cc.add(new Case(protocol, "Supported Ciphers from Engine", engineFromContext.getSupportedCipherSuites()));
-        cc.add(new Case(protocol, "Enabled Ciphers from Engine Parameters", engineFromContext.getSSLParameters().getCipherSuites()));
+        cc.add(new Case(protocol, "Enabled Ciphers from Server Engine", serverEngine.getEnabledCipherSuites()));
+        cc.add(new Case(protocol, "Supported Ciphers from Server Engine", serverEngine.getSupportedCipherSuites()));
+        cc.add(new Case(protocol, "Enabled Ciphers from Server Engine Parameters", serverEngine.getSSLParameters().getCipherSuites()));
 
-        pc.add(new Case(protocol, "Enabled Protocols from Engine", engineFromContext.getEnabledProtocols()));
-        pc.add(new Case(protocol, "Supported Protocols from Engine", engineFromContext.getSupportedProtocols()));
-        pc.add(new Case(protocol, "Enabled Protocols from Engine Parameters", engineFromContext.getSSLParameters().getProtocols()));
+        pc.add(new Case(protocol, "Enabled Protocols from Server Engine", serverEngine.getEnabledProtocols()));
+        pc.add(new Case(protocol, "Supported Protocols from Server Engine", serverEngine.getSupportedProtocols()));
+        pc.add(new Case(protocol, "Enabled Protocols from Server Engine Parameters", serverEngine.getSSLParameters().getProtocols()));
+
+        cc.add(new Case(protocol, "Enabled Ciphers from Client Engine", clientEngine.getEnabledCipherSuites()));
+        cc.add(new Case(protocol, "Supported Ciphers from Client Engine", clientEngine.getSupportedCipherSuites()));
+        cc.add(new Case(protocol, "Enabled Ciphers from Client Engine Parameters", clientEngine.getSSLParameters().getCipherSuites()));
+
+        pc.add(new Case(protocol, "Enabled Protocols from Client Engine", clientEngine.getEnabledProtocols()));
+        pc.add(new Case(protocol, "Supported Protocols from Client Engine", clientEngine.getSupportedProtocols()));
+        pc.add(new Case(protocol, "Enabled Protocols from Client Engine Parameters", clientEngine.getSSLParameters().getProtocols()));
 
         cc.add(new Case(protocol, "Default Ciphers from Context Parameters", defaultParamsFromContext.getCipherSuites()));
         cc.add(new Case(protocol, "Supported Ciphers from Context Parameters", supportedParamsFromContext.getCipherSuites()));
