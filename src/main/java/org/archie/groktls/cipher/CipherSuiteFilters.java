@@ -21,6 +21,7 @@ import java.util.Set;
 import org.archie.groktls.ItemFilter;
 import org.archie.groktls.ItemFilterBuilder;
 import org.archie.groktls.ItemFilterBuilder.Filter;
+import org.archie.groktls.cipher.Cipher.CipherType;
 
 /**
  * Common {@link Filter}s that can be applied in a {@link ItemFilterBuilder} to filter a set of {@link CipherSuite}s.
@@ -211,6 +212,22 @@ public class CipherSuiteFilters {
             @Override
             public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
                 return (cipher.getCipher() != null) && (cipher.getCipher().getStrength() >= minSize);
+            }
+        };
+    }
+
+    /**
+     * Matches cipher suites that use encryption (a cipher) of the specified type.
+     * <p>
+     * <em>Filter spec usage:</em> <code>AEAD</code> or <code>STREAM</code> or <code>BLOCK</code>.
+     *
+     * @param minSize the minimum number of bits in the cipher strength (e.g. <code>128</code>)
+     */
+    public static CipherFilter encryptionType(final CipherType type) {
+        return new SafeFilter() {
+            @Override
+            public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
+                return (cipher.getCipher() != null) && (cipher.getCipher().getType() == type);
             }
         };
     }

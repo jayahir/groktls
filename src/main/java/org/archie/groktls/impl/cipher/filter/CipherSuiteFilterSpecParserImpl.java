@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.archie.groktls.cipher.Cipher.CipherType;
 import org.archie.groktls.cipher.CipherSuite;
 import org.archie.groktls.cipher.CipherSuiteFilters.CipherFilter;
 import org.archie.groktls.impl.cipher.CipherSuiteParserImpl;
@@ -57,6 +58,10 @@ public class CipherSuiteFilterSpecParserImpl extends ItemFilterSpecParserImpl<Ci
         // TODO: SUITEB128ONLY?
         CIPHER_STRINGS.put("SUITEB128", suiteb128());
         CIPHER_STRINGS.put("SUITEB192", suiteb192());
+
+        CIPHER_STRINGS.put("AEAD", encryptionType(CipherType.AEAD));
+        CIPHER_STRINGS.put("BLOCK", encryptionType(CipherType.BLOCK));
+        CIPHER_STRINGS.put("STREAM", encryptionType(CipherType.STREAM));
     }
 
     private final CipherSuiteParserImpl cipherSuiteParser = new CipherSuiteParserImpl();

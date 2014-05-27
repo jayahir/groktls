@@ -189,6 +189,7 @@ These filters can be applied to cipher suites or protocol variants.
 * `SUITEB192` - matches cipher suites using algorithms approved for use in TLS by NSA Suite B with a 192 bit minimum security
 * `CIPHER_SUITE_NAME` - e.g. `TLS_DHE_DSS_WITH_RC4_128_SHA` - matches a specific cipher suite
 * `kALGO` - e.g. `kECDHE` - matches cipher suites using the specified key exchange algorithm
+* `AEAD`/`BLOCK`/`STREAM` - matches cipher suites using ciphers in AEAD/BLOCK/STREAM mode.
 * `aALGO` - e.g. `aDSS` - matches cipher suites using the specified authentication algorithm
 * `mALGO` - e.g. `mSHA` - matches cipher suites using the specified digest/mac algorithm
 * `eALGO` - e.g. `eAES` - matches cipher suites using the specified encryption algorithm

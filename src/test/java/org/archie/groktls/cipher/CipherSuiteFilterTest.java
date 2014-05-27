@@ -27,6 +27,7 @@ import org.archie.groktls.AbstractItemFilterTest;
 import org.archie.groktls.ItemFilter;
 import org.archie.groktls.ItemFilter.FilterResult;
 import org.archie.groktls.ItemFilterSpecParser;
+import org.archie.groktls.cipher.Cipher.CipherType;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterBuilderImpl;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterSpecParserImpl;
 import org.junit.Before;
@@ -206,6 +207,52 @@ public class CipherSuiteFilterTest extends AbstractItemFilterTest<CipherSuite> {
                                                                               encryptionMode("GCM"))).build();
         checkResult("eAES128_GCM", filter, supported, expectedCiphers);
         checkResult("eAES_128_GCM", filter, supported, expectedCiphers);
+    }
+
+    @Test
+    public void testEncryptionTypeAEAD() {
+        final List<String> supported = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DHE_DSS_WITH_AES_128_GCM_SHA",
+                                                     "TLS_DHE_DSS_WITH_AES_128_CCM_SHA",
+                                                     "TLS_DHE_DSS_WITH_CHACHA20_POLY1305_SHA",
+                                                     "TLS_DHE_DSS_WITH_RC4_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_128_CTR_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_256_CNT_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_GCM_SHA",
+                                                           "TLS_DHE_DSS_WITH_AES_128_CCM_SHA",
+                                                           "TLS_DHE_DSS_WITH_CHACHA20_POLY1305_SHA");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(encryptionType(CipherType.AEAD)).build();
+        checkResult("AEAD", filter, supported, expectedCiphers);
+    }
+
+    @Test
+    public void testEncryptionTypeBLOCK() {
+        final List<String> supported = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DHE_DSS_WITH_AES_128_GCM_SHA",
+                                                     "TLS_DH_anon_WITH_AES_128_CCM_SHA",
+                                                     "TLS_DH_anon_WITH_CHACHA20_POLY1305_SHA",
+                                                     "TLS_DHE_DSS_WITH_RC4_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_128_CTR_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_256_CNT_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_CBC_SHA");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(encryptionType(CipherType.BLOCK)).build();
+        checkResult("BLOCK", filter, supported, expectedCiphers);
+    }
+
+    @Test
+    public void testEncryptionTypeSTREAM() {
+        final List<String> supported = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DHE_DSS_WITH_AES_128_GCM_SHA",
+                                                     "TLS_DH_anon_WITH_AES_128_CCM_SHA",
+                                                     "TLS_DH_anon_WITH_CHACHA20_POLY1305_SHA",
+                                                     "TLS_DHE_DSS_WITH_RC4_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_128_CTR_SHA",
+                                                     "TLS_DHE_DSS_WITH_SEED_256_CNT_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_DHE_DSS_WITH_RC4_SHA",
+                                                           "TLS_DHE_DSS_WITH_SEED_128_CTR_SHA",
+                                                           "TLS_DHE_DSS_WITH_SEED_256_CNT_SHA");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(encryptionType(CipherType.STREAM)).build();
+        checkResult("STREAM", filter, supported, expectedCiphers);
     }
 
     @Test
