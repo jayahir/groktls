@@ -178,7 +178,7 @@ These filters can be applied to cipher suites or protocol variants.
   * `DH`, `DHE`, `RSA`, `ECDH` and `ECDHE` key exchange
   * `DSS`, `RSA`, `ECDSA` authentication
   * `AES` and `3DES` encryption
-  * `CBC` and `GCM` encryption modes
+  * `CBC`, `CCM` and `GCM` encryption modes
   * `SHA`, `SHA256` and `SHA384` mac/digest
 * `SCSV` - matches any signalling cipher suite values (e.g. `TLS_EMPTY_RENEGOTIATION_INFO_SCSV`)
 * `HIGH` - matches cipher suites with strong encryption - currently `AES` >= 128 bit encryption and any other algorithm with key length > 128 bits

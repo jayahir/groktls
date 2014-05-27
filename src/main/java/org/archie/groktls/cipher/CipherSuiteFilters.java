@@ -462,7 +462,7 @@ public class CipherSuiteFilters {
      * <li><b>Key exchange:</b> <code>DH, DHE, RSA, ECDH, ECDHE</code></li>
      * <li><b>Authentication:</b> <code>DSS, RSA, ECDSA<</code></li>
      * <li><b>Encryption:</b> <code>AES, 3DES</code></li>
-     * <li><b>Encryption Mode:</b> <code>CBC, GCM</code></li>
+     * <li><b>Encryption Mode:</b> <code>CBC, GCM, CCM</code></li>
      * <li><b>Mac/Hash:</b> <code>SHA, SHA256, SHA384</code></li>
      * </ul>
      * <p>
@@ -474,7 +474,7 @@ public class CipherSuiteFilters {
         return and(or(keyExchange("DH"), keyExchange("DHE"), keyExchange("RSA"), keyExchange("ECDH"), keyExchange("ECDHE")),
                    or(authentication("DSS"), authentication("RSA"), authentication("ECDSA")),
                    or(encryption("AES"), encryption("3DES")),
-                   or(encryptionMode("CBC"), encryptionMode("GCM")),
+                   or(encryptionMode("CBC"), encryptionMode("GCM"), encryptionMode("CCM")),
                    or(mac("SHA"), mac("SHA256"), mac("SHA384"), mac("SHA512")));
     }
 
