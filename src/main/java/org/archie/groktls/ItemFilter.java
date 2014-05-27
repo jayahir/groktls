@@ -68,6 +68,11 @@ public interface ItemFilter<I extends NamedItem> {
          */
         public Set<I> getBlacklisted();
 
+        /**
+         * Obtains the set of specified items that could not be parsed.
+         */
+        public Set<String> getUnparseableNames();
+
     }
 
     /**

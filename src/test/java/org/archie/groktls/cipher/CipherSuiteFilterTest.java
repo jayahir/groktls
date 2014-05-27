@@ -16,6 +16,8 @@
 package org.archie.groktls.cipher;
 
 import static org.archie.groktls.cipher.CipherSuiteFilters.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import java.util.List;
 
 import org.archie.groktls.AbstractItemFilterTest;
 import org.archie.groktls.ItemFilter;
+import org.archie.groktls.ItemFilter.FilterResult;
 import org.archie.groktls.ItemFilterSpecParser;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterBuilderImpl;
 import org.archie.groktls.impl.cipher.filter.CipherSuiteFilterSpecParserImpl;
@@ -38,6 +41,18 @@ public class CipherSuiteFilterTest extends AbstractItemFilterTest<CipherSuite> {
     @Override
     protected ItemFilterSpecParser<CipherSuite> createSpecParser() {
         return new CipherSuiteFilterSpecParserImpl();
+    }
+
+    @Test
+    public void testUnparseable() {
+        List<String> supported = Arrays.asList("TLS_DHE_DSS_WITH_AES_128_CBC_SHA", "COMPLETE_RUBBISH");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(all()).build();
+
+        FilterResult<CipherSuite> result = filter.filter(supported, Collections.<String> emptyList());
+
+        assertEquals(1, result.getIncluded().size());
+        assertEquals(1, result.getUnparseableNames().size());
+        assertTrue(result.getUnparseableNames().contains("COMPLETE_RUBBISH"));
     }
 
     // UNSAFE+LOW

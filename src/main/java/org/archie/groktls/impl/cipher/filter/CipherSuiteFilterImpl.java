@@ -34,8 +34,8 @@ public class CipherSuiteFilterImpl extends ItemFilterImpl<CipherSuite> {
     }
 
     @Override
-    protected Set<CipherSuite> parse(final List<String> items) {
-        return this.parser.parse(items);
+    protected void parse(final List<String> items, final Set<CipherSuite> parsed, final Set<String> unparseable) {
+        parsed.addAll(this.parser.parse(items, unparseable));
     }
 
     @Override

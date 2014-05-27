@@ -32,14 +32,20 @@ public class ProtocolVariantParserImpl implements ItemParser<ProtocolVariant> {
     private static final Pattern PROTOCOL_VARIANT = Pattern.compile("([A-Z]+)v([0-9]+)(\\.)?([0-9]+)?([A-Za-z]+)?");
 
     @Override
-    public Set<ProtocolVariant> parse(final Collection<String> protocolVariant) {
+    public Set<ProtocolVariant> parse(final Collection<String> itemNames) {
+        return parse(itemNames, null);
+    }
+
+    @Override
+    public Set<ProtocolVariant> parse(final Collection<String> protocolVariants, final Collection<String> unparseableNames) {
         final Set<ProtocolVariant> parsed = new LinkedHashSet<ProtocolVariant>();
-        for (final String variant : protocolVariant) {
+        for (final String variant : protocolVariants) {
             final ProtocolVariant pv = parse(variant);
             if (pv != null) {
                 parsed.add(pv);
+            } else if (unparseableNames != null) {
+                unparseableNames.add(variant);
             }
-            // TODO: What to do with unparseable...
         }
         return parsed;
     }

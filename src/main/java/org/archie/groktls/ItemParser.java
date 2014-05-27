@@ -40,4 +40,13 @@ public interface ItemParser<I extends NamedItem> {
      */
     Set<? extends I> parse(Collection<String> itemNames);
 
+    /**
+     * Parses a series of itemNames.
+     *
+     * @param itemNames the names of the items to parse.
+     * @param unparseableNames the names of the items that could not be parsed.
+     * @return the parsed items, in the order the names were provided for parsing.
+     */
+    Set<? extends I> parse(Collection<String> itemNames, Collection<String> unparseableNames);
+
 }

@@ -87,13 +87,19 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
 
     @Override
     public Set<CipherSuite> parse(final Collection<String> ciphers) {
+        return parse(ciphers, null);
+    }
+
+    @Override
+    public Set<CipherSuite> parse(final Collection<String> ciphers, final Collection<String> unparseableNames) {
         final Set<CipherSuite> parsed = new LinkedHashSet<CipherSuite>();
         for (final String cipherSuite : ciphers) {
             final CipherSuite cs = parse(cipherSuite);
             if (cs != null) {
                 parsed.add(cs);
+            } else if (unparseableNames != null) {
+                unparseableNames.add(cipherSuite);
             }
-            // TODO: What to do with unparseable...
         }
         return parsed;
     }

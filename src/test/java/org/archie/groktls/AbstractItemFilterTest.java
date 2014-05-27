@@ -51,6 +51,11 @@ public abstract class AbstractItemFilterTest<I extends NamedItem> {
         FilterResult<I> fromBuilder = filter.filter(supported, defaults);
         FilterResult<I> fromSpec = createSpecParser().parse(cipherSpec).filter(supported, defaults);
 
+        if (!fromBuilder.getUnparseableNames().isEmpty()) {
+            // Should cover supported and defaults
+            fail(String.format("Unparseable names: %s", fromBuilder.getUnparseableNames()));
+        }
+
         checkResult(cipherSpec + " (builder)", fromBuilder, expected, blacklisted);
         checkResult(cipherSpec + " (spec)", fromSpec, expected, blacklisted);
     }
@@ -69,7 +74,7 @@ public abstract class AbstractItemFilterTest<I extends NamedItem> {
         extra.removeAll(expected);
 
         if (!missed.isEmpty()) {
-            System.err.println(included);
+            System.err.println("Matched: " + included);
             fail(String.format("%s: missing expected ciphers %s", name, missed));
         }
         if (!extra.isEmpty()) {
@@ -84,8 +89,8 @@ public abstract class AbstractItemFilterTest<I extends NamedItem> {
             String comp = comps.next();
 
             if (!cipher.equals(comp)) {
-                System.err.println(included);
-                System.err.println(expected);
+                System.err.println("Matched: " + included);
+                System.err.println("Expected: " + expected);
                 fail(String.format("%s: cipher at position %d expected %s but got %s", name, i, comp, cipher));
             }
             i++;

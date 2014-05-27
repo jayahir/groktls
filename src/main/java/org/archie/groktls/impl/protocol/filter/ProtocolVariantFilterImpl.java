@@ -38,9 +38,10 @@ public class ProtocolVariantFilterImpl extends ItemFilterImpl<ProtocolVariant> {
         return parameters.getProtocols();
     }
 
+
     @Override
-    protected Set<ProtocolVariant> parse(final List<String> items) {
-        return this.parser.parse(items);
+    protected void parse(final List<String> items, final Set<ProtocolVariant> parsed, final Set<String> unparseable) {
+        parsed.addAll(this.parser.parse(items, unparseable));
     }
 
     @Override

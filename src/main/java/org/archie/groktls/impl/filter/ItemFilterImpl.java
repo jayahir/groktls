@@ -36,6 +36,7 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
         public Set<I> included = new LinkedHashSet<I>();
         public Set<I> excluded = new LinkedHashSet<I>();
         public Set<I> blacklisted = new LinkedHashSet<I>();
+        public Set<String> unparseable = new LinkedHashSet<String>();
 
         @Override
         public Set<I> getIncluded() {
@@ -61,6 +62,11 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
             return Collections.unmodifiableSet(this.blacklisted);
         }
 
+        @Override
+        public Set<String> getUnparseableNames() {
+            return Collections.unmodifiableSet(this.unparseable);
+        }
+
     }
 
     public interface Step<I extends NamedItem> {
@@ -76,17 +82,21 @@ public abstract class ItemFilterImpl<I extends NamedItem> implements ItemFilter<
 
     @Override
     public FilterResult<I> filter(final List<String> supportedItems, final List<String> defaultItems) {
-        final Set<I> supported = parse(supportedItems);
-        final Set<I> defaults = parse(defaultItems);
-
         final FilterResultImpl<I> result = new FilterResultImpl<I>();
+
+        final Set<I> supported = new LinkedHashSet<I>();
+        final Set<I> defaults = new LinkedHashSet<I>();
+
+        parse(supportedItems, supported, result.unparseable);
+        parse(defaultItems, defaults, result.unparseable);
+
         for (final Step<I> step : this.steps) {
             step.apply(result, supported, defaults);
         }
         return result;
     }
 
-    protected abstract Set<I> parse(List<String> items);
+    protected abstract void parse(List<String> items, Set<I> parsed, Set<String> unparseable);
 
     @Override
     public FilterResult<I> filter(final String[] supportedCiphers, final String[] defaultCiphers) {
