@@ -258,7 +258,7 @@ new GrokTLS().createCipherSuiteFilterSpecParser().parse("eAES:+aRSA");
 
 **Builder Syntax**
 ```java
-new GrokTLS().createCipherSuiteFilterBuilder().add(encryption("AES)).end(authentication("RSA")).build();
+new GrokTLS().createCipherSuiteFilterBuilder().add(encryption("AES")).end(authentication("RSA")).build();
 ```
 
 ### Unsafe cipher suite
