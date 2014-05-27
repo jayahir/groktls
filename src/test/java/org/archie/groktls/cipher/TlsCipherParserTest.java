@@ -75,7 +75,7 @@ public class TlsCipherParserTest {
     }
 
     @Test
-    public void testTLS10_RFC4346_CipherSuites() {
+    public void testTLS10_RFC4346_RFC5469_CipherSuites() {
         check("TLS_RSA_WITH_NULL_MD5", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "MD5", 128);
         check("TLS_RSA_WITH_NULL_SHA", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
         check("TLS_RSA_EXPORT_WITH_RC4_40_MD5", "RSA", "RSA", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
@@ -261,6 +261,54 @@ public class TlsCipherParserTest {
         check("TLS_DH_anon_WITH_AES_256_CBC_SHA256", "DH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA256", 256);
         check("TLS_DH_anon_WITH_AES_128_GCM_SHA256", "DH", "NULL", false, null, "AES", "GCM", CipherType.AEAD, 128, "SHA256", 256);
         check("TLS_DH_anon_WITH_AES_256_GCM_SHA384", "DH", "NULL", false, null, "AES", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+    }
+
+    @Test
+    public void test_Camellia_RFC6367_CipherSuites() {
+        check("TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256", "ECDHE", "ECDSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384", "ECDHE", "ECDSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256", "ECDH", "ECDSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384", "ECDH", "ECDSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256", "ECDHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384", "ECDHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256", "ECDH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384", "ECDH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_RSA_WITH_CAMELLIA_128_GCM_SHA256", "RSA", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_RSA_WITH_CAMELLIA_256_GCM_SHA384", "RSA", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DHE_RSA_WITH_CAMELLIA_128_GCM_SHA256", "DHE", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_CAMELLIA_256_GCM_SHA384", "DHE", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DH_RSA_WITH_CAMELLIA_128_GCM_SHA256", "DH", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DH_RSA_WITH_CAMELLIA_256_GCM_SHA384", "DH", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DHE_DSS_WITH_CAMELLIA_128_GCM_SHA256", "DHE", "DSS", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_DSS_WITH_CAMELLIA_256_GCM_SHA384", "DHE", "DSS", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DH_DSS_WITH_CAMELLIA_128_GCM_SHA256", "DH", "DSS", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DH_DSS_WITH_CAMELLIA_256_GCM_SHA384", "DH", "DSS", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DH_anon_WITH_CAMELLIA_128_GCM_SHA256", "DH", "NULL", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DH_anon_WITH_CAMELLIA_256_GCM_SHA384", "DH", "NULL", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_GCM_SHA256", "ECDHE", "ECDSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_GCM_SHA384", "ECDHE", "ECDSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_ECDH_ECDSA_WITH_CAMELLIA_128_GCM_SHA256", "ECDH", "ECDSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDH_ECDSA_WITH_CAMELLIA_256_GCM_SHA384", "ECDH", "ECDSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256", "ECDHE", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDHE_RSA_WITH_CAMELLIA_256_GCM_SHA384", "ECDHE", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_ECDH_RSA_WITH_CAMELLIA_128_GCM_SHA256", "ECDH", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDH_RSA_WITH_CAMELLIA_256_GCM_SHA384", "ECDH", "RSA", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_PSK_WITH_CAMELLIA_128_GCM_SHA256", "PSK", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_PSK_WITH_CAMELLIA_256_GCM_SHA384", "PSK", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_DHE_PSK_WITH_CAMELLIA_128_GCM_SHA256", "DHE", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_CAMELLIA_256_GCM_SHA384", "DHE", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_RSA_PSK_WITH_CAMELLIA_128_GCM_SHA256", "RSA", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_RSA_PSK_WITH_CAMELLIA_256_GCM_SHA384", "RSA", "PSK", false, null, "CAMELLIA", "GCM", CipherType.AEAD, 256, "SHA384", 384);
+        check("TLS_PSK_WITH_CAMELLIA_128_CBC_SHA256", "PSK", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_PSK_WITH_CAMELLIA_256_CBC_SHA384", "PSK", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_DHE_PSK_WITH_CAMELLIA_128_CBC_SHA256", "DHE", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384", "DHE", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256", "RSA", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384", "RSA", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256", "ECDHE", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
+        check("TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384", "ECDHE", "PSK", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+
+
     }
 
     @Test
