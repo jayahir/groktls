@@ -119,6 +119,10 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
             return cipher;
         }
         cipher = parseAlgoSizeCipher(cipherSpec);
+        if (cipher != null) {
+            return cipher;
+        }
+        cipher = parseGenericCompositionCipher(cipherSpec);
 
         return cipher;
     }
@@ -138,6 +142,19 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
                 return new CipherImpl(cipherSpec, algo, mode, keySize);
             } catch (final NumberFormatException e) {
             }
+        }
+        return null;
+    }
+
+    /**
+     * Parse sane CIPHER_MAC AEAD constructions
+     */
+    private CipherImpl parseGenericCompositionCipher(final String cipherSpec) {
+        final Matcher algoMatch = Pattern.compile("([^_].+)_([^_]+)").matcher(cipherSpec);
+
+        if (algoMatch.matches()) {
+            return new CipherImpl(cipherSpec, cipherSpec, null, CipherImpl.DEFAULT);
+
         }
         return null;
     }

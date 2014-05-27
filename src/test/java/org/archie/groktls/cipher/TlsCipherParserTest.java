@@ -438,6 +438,15 @@ public class TlsCipherParserTest {
         check("TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8", "ECDHE", "ECDSA", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
     }
 
+    @Test
+    public void testChaCha_Poly1305_draft_agl_CipherSuites() {
+        // http://tools.ietf.org/html/draft-agl-tls-chacha20poly1305-04
+
+        check("TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "ECDHE", "RSA", false, null, "CHACHA20_POLY1305", null, CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256", "ECDHE", "ECDSA", false, null, "CHACHA20_POLY1305", null, CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "DHE", "RSA", false, null, "CHACHA20_POLY1305", null, CipherType.AEAD, 256, "SHA256", 256);
+    }
+
     private void check(final String cipherSuite,
                        final String keyExchange,
                        final String authentication,

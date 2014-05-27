@@ -52,6 +52,7 @@ public class CipherImpl implements Cipher {
         DEFAULT_KEYSIZES.put("28147", 256); // GOST 89
         DEFAULT_KEYSIZES.put("IDEA", 128);
         DEFAULT_KEYSIZES.put("SEED", 128);
+        DEFAULT_KEYSIZES.put("CHACHA20_POLY1305", 256);
     }
 
     private static Map<String, Integer> STRENGTHS = new HashMap<String, Integer>();
@@ -67,6 +68,7 @@ public class CipherImpl implements Cipher {
         TYPES.put("GCM", CipherType.AEAD);
         TYPES.put("CCM", CipherType.AEAD);
         TYPES.put("CCM_8", CipherType.AEAD);
+        TYPES.put("CHACHA20_POLY1305", CipherType.AEAD);
         TYPES.put("CNT", CipherType.STREAM);
         TYPES.put("CTR", CipherType.STREAM);
         TYPES.put("RC4", CipherType.STREAM);
