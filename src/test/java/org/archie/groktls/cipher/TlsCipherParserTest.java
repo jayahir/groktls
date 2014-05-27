@@ -429,6 +429,15 @@ public class TlsCipherParserTest {
         check("TLS_SRP_SHA_DSS_WITH_AES_256_CBC_SHA", "SRP_SHA", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
     }
 
+    @Test
+    public void testECC_draft_mcgrew_tls_aes_ccm_ecc_CipherSuites() {
+        // http://tools.ietf.org/html/draft-mcgrew-tls-aes-ccm-ecc-08
+        check("TLS_ECDHE_ECDSA_WITH_AES_128_CCM", "ECDHE", "ECDSA", false, null, "AES", "CCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_AES_256_CCM", "ECDHE", "ECDSA", false, null, "AES", "CCM", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8", "ECDHE", "ECDSA", false, null, "AES", "CCM_8", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8", "ECDHE", "ECDSA", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
+    }
+
     private void check(final String cipherSuite,
                        final String keyExchange,
                        final String authentication,
