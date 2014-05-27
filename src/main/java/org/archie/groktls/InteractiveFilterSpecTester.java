@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -64,15 +65,23 @@ public class InteractiveFilterSpecTester {
 
     private boolean ciphers = true;
     private boolean client = true;
+    private String engine;
+    private String provider;
+
     private SSLContext ctx;
     private final GrokTLS grok = new GrokTLS();
 
     private InteractiveFilterSpecTester() {
+        try {
+            this.provider = SSLContext.getDefault().getProvider().getName();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("Unable to detect default SSLContext provider", e);
+        }
     }
 
     private void start() throws NoSuchAlgorithmException, KeyManagementException {
         checkUnrestrictedJce();
-        init(null);
+        init();
     }
 
     /**
@@ -93,12 +102,18 @@ public class InteractiveFilterSpecTester {
         }
     }
 
-    protected void init(final String engine) throws NoSuchAlgorithmException, KeyManagementException {
-        if ((engine == null) || (engine.trim().length() == 0)) {
-            this.ctx = SSLContext.getDefault();
-        } else {
-            this.ctx = SSLContext.getInstance(engine);
-            this.ctx.init(null, null, null);
+    protected void init() throws KeyManagementException {
+        try {
+            if ((this.engine == null) || this.engine.trim().isEmpty() || this.engine.equalsIgnoreCase("default")) {
+                this.ctx = SSLContext.getDefault();
+            } else {
+                this.ctx = SSLContext.getInstance(this.engine, this.provider);
+                this.ctx.init(null, null, null);
+            }
+        } catch (NoSuchProviderException e) {
+            System.err.printf("Provider %s is not registered%n", this.provider);
+        } catch (NoSuchAlgorithmException e) {
+            System.err.printf("Engine %s is not registered%n", this.engine);
         }
     }
 
@@ -146,8 +161,14 @@ public class InteractiveFilterSpecTester {
         } else if ("consistent".equals(input)) {
             checkConsistency();
         } else if (input.startsWith("engine")) {
-            final String protocol = input.substring("engine".length()).trim();
-            init(protocol);
+            this.engine = input.substring("engine".length()).trim();
+            init();
+            if (status) {
+                printStatus();
+            }
+        } else if (input.startsWith("provider")) {
+            this.provider = input.substring("provider".length()).trim();
+            init();
             if (status) {
                 printStatus();
             }
@@ -165,7 +186,8 @@ public class InteractiveFilterSpecTester {
     }
 
     private void printStatus() {
-        System.out.printf("Interactive filter spec tester [%s, %s, %s].%n",
+        System.out.printf("Interactive filter spec tester [%s/%s, %s, %s].%n",
+                          this.ctx.getProvider().getName(),
                           this.ctx.getProtocol(),
                           this.client ? "client" : "server",
                           this.ciphers ? "cipher suite" : "protocol variant");
