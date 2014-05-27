@@ -43,108 +43,108 @@ public class TlsCipherParserTest {
     @Test
     public void testSSlv3CipherSuites() {
         check("SSL_RSA_WITH_NULL_MD5", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "MD5", 128);
-        check("SSL_RSA_WITH_NULL_SHA384", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
+        check("SSL_RSA_WITH_NULL_SHA", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
         check("SSL_RSA_EXPORT_WITH_RC4_40_MD5", "RSA", "RSA", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
         check("SSL_RSA_WITH_RC4_128_MD5", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "MD5", 128);
-        check("SSL_RSA_WITH_RC4_128_SHA384", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
+        check("SSL_RSA_WITH_RC4_128_SHA", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
         check("SSL_RSA_EXPORT_WITH_RC2_CBC_40_MD5", "RSA", "RSA", true, null, "RC2", "CBC", CipherType.BLOCK, 40, "MD5", 128);
-        check("SSL_RSA_WITH_IDEA_CBC_SHA384", "RSA", "RSA", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("SSL_RSA_EXPORT_WITH_DES40_CBC_SHA384", "RSA", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_RSA_WITH_DES_CBC_SHA384", "RSA", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_RSA_WITH_3DES_EDE_CBC_SHA384", "RSA", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("SSL_DH_DSS_EXPORT_WITH_DES40_CBC_SHA384", "DH", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_DH_DSS_WITH_DES_CBC_SHA384", "DH", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_DH_DSS_WITH_3DES_EDE_CBC_SHA384", "DH", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("SSL_DH_RSA_EXPORT_WITH_DES40_CBC_SHA384", "DH", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_DH_RSA_WITH_DES_CBC_SHA384", "DH", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_DH_RSA_WITH_3DES_EDE_CBC_SHA384", "DH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA384", "DHE", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_DHE_DSS_WITH_DES_CBC_SHA384", "DHE", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA384", "DHE", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA384", "DHE", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_DHE_RSA_WITH_DES_CBC_SHA384", "DHE", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA384", "DHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
+        check("SSL_RSA_WITH_IDEA_CBC_SHA", "RSA", "RSA", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("SSL_RSA_EXPORT_WITH_DES40_CBC_SHA", "RSA", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_RSA_WITH_DES_CBC_SHA", "RSA", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_RSA_WITH_3DES_EDE_CBC_SHA", "RSA", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("SSL_DH_DSS_EXPORT_WITH_DES40_CBC_SHA", "DH", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_DH_DSS_WITH_DES_CBC_SHA", "DH", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_DH_DSS_WITH_3DES_EDE_CBC_SHA", "DH", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("SSL_DH_RSA_EXPORT_WITH_DES40_CBC_SHA", "DH", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_DH_RSA_WITH_DES_CBC_SHA", "DH", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_DH_RSA_WITH_3DES_EDE_CBC_SHA", "DH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA", "DHE", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_DHE_DSS_WITH_DES_CBC_SHA", "DHE", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA", "DHE", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA", "DHE", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_DHE_RSA_WITH_DES_CBC_SHA", "DHE", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "DHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
         check("SSL_DH_anon_EXPORT_WITH_RC4_40_MD5", "DH", "NULL", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
         check("SSL_DH_anon_WITH_RC4_128_MD5", "DH", "NULL", false, null, "RC4", null, CipherType.STREAM, 128, "MD5", 128);
-        check("SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA384", "DH", "NULL", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("SSL_DH_anon_WITH_DES_CBC_SHA384", "DH", "NULL", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("SSL_DH_anon_WITH_3DES_EDE_CBC_SHA384", "DH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("SSL_FORTEZZA_KEA_WITH_NULL_SHA384", "FORTEZZA", "KEA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("SSL_FORTEZZA_KEA_WITH_FORTEZZA_CBC_SHA384", "FORTEZZA", "KEA", false, null, "FORTEZZA", "CBC", CipherType.BLOCK, 80, "SHA384", 384);
-        check("SSL_FORTEZZA_KEA_WITH_RC4_128_SHA384", "FORTEZZA", "KEA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
+        check("SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA", "DH", "NULL", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("SSL_DH_anon_WITH_DES_CBC_SHA", "DH", "NULL", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("SSL_DH_anon_WITH_3DES_EDE_CBC_SHA", "DH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("SSL_FORTEZZA_KEA_WITH_NULL_SHA", "FORTEZZA", "KEA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("SSL_FORTEZZA_KEA_WITH_FORTEZZA_CBC_SHA", "FORTEZZA", "KEA", false, null, "FORTEZZA", "CBC", CipherType.BLOCK, 80, "SHA", 160);
+        check("SSL_FORTEZZA_KEA_WITH_RC4_128_SHA", "FORTEZZA", "KEA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
     }
 
     @Test
     public void testTLS10_RFC4346_CipherSuites() {
         check("TLS_RSA_WITH_NULL_MD5", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "MD5", 128);
-        check("TLS_RSA_WITH_NULL_SHA384", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
+        check("TLS_RSA_WITH_NULL_SHA", "RSA", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
         check("TLS_RSA_EXPORT_WITH_RC4_40_MD5", "RSA", "RSA", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
         check("TLS_RSA_WITH_RC4_128_MD5", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "MD5", 128);
-        check("TLS_RSA_WITH_RC4_128_SHA384", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
+        check("TLS_RSA_WITH_RC4_128_SHA", "RSA", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
         check("TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5", "RSA", "RSA", true, null, "RC2", "CBC", CipherType.BLOCK, 40, "MD5", 128);
-        check("TLS_RSA_WITH_IDEA_CBC_SHA384", "RSA", "RSA", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_RSA_EXPORT_WITH_DES40_CBC_SHA384", "RSA", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_RSA_WITH_DES_CBC_SHA384", "RSA", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_RSA_WITH_3DES_EDE_CBC_SHA384", "RSA", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA384", "DH", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_DES_CBC_SHA384", "DH", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA384", "DH", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA384", "DH", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_DES_CBC_SHA384", "DH", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA384", "DH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA384", "DHE", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_DES_CBC_SHA384", "DHE", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA384", "DHE", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA384", "DHE", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_DES_CBC_SHA384", "DHE", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA384", "DHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
+        check("TLS_RSA_WITH_IDEA_CBC_SHA", "RSA", "RSA", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_RSA_EXPORT_WITH_DES40_CBC_SHA", "RSA", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_RSA_WITH_DES_CBC_SHA", "RSA", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_RSA_WITH_3DES_EDE_CBC_SHA", "RSA", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_DH_DSS_EXPORT_WITH_DES40_CBC_SHA", "DH", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_DH_DSS_WITH_DES_CBC_SHA", "DH", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_DH_DSS_WITH_3DES_EDE_CBC_SHA", "DH", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_DH_RSA_EXPORT_WITH_DES40_CBC_SHA", "DH", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_DH_RSA_WITH_DES_CBC_SHA", "DH", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_DH_RSA_WITH_3DES_EDE_CBC_SHA", "DH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA", "DHE", "DSS", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_DES_CBC_SHA", "DHE", "DSS", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA", "DHE", "DSS", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA", "DHE", "RSA", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_DES_CBC_SHA", "DHE", "RSA", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "DHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
         check("TLS_DH_anon_EXPORT_WITH_RC4_40_MD5", "DH", "NULL", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
         check("TLS_DH_anon_WITH_RC4_128_MD5", "DH", "NULL", false, null, "RC4", null, CipherType.STREAM, 128, "MD5", 128);
-        check("TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA384", "DH", "NULL", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_DH_anon_WITH_DES_CBC_SHA384", "DH", "NULL", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_DH_anon_WITH_3DES_EDE_CBC_SHA384", "DH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
+        check("TLS_DH_anon_EXPORT_WITH_DES40_CBC_SHA", "DH", "NULL", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_DH_anon_WITH_DES_CBC_SHA", "DH", "NULL", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_DH_anon_WITH_3DES_EDE_CBC_SHA", "DH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
     }
 
     @Test
     public void test_RFC3268_AESCipherSuites() {
-        check("TLS_RSA_WITH_AES_128_CBC_SHA384", "RSA", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_RSA_WITH_AES_256_CBC_SHA384", "RSA", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_AES_128_CBC_SHA384", "DH", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_AES_256_CBC_SHA384", "DH", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_AES_128_CBC_SHA384", "DH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_AES_256_CBC_SHA384", "DH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_AES_128_CBC_SHA384", "DHE", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_AES_256_CBC_SHA384", "DHE", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_AES_128_CBC_SHA384", "DHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_AES_256_CBC_SHA384", "DHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_anon_WITH_AES_128_CBC_SHA384", "DH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_anon_WITH_AES_256_CBC_SHA384", "DH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_RSA_WITH_AES_128_CBC_SHA", "RSA", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_RSA_WITH_AES_256_CBC_SHA", "RSA", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_DSS_WITH_AES_128_CBC_SHA", "DH", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_DSS_WITH_AES_256_CBC_SHA", "DH", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_RSA_WITH_AES_128_CBC_SHA", "DH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_RSA_WITH_AES_256_CBC_SHA", "DH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_AES_128_CBC_SHA", "DHE", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_AES_256_CBC_SHA", "DHE", "DSS", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "DHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_AES_256_CBC_SHA", "DHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_anon_WITH_AES_128_CBC_SHA", "DH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_anon_WITH_AES_256_CBC_SHA", "DH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
     }
 
     @Test
     public void testRFC413_RFC5932_CameliaCipherSuites() {
-        check("TLS_RSA_WITH_CAMELLIA_128_CBC_SHA384", "RSA", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_RSA_WITH_CAMELLIA_256_CBC_SHA384", "RSA", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA384", "DH", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA384", "DH", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA384", "DH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA384", "DH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA384", "DHE", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA384", "DHE", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA384", "DHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA384", "DHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA384", "DH", "NULL", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA384", "DH", "NULL", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_RSA_WITH_CAMELLIA_128_CBC_SHA", "RSA", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_RSA_WITH_CAMELLIA_256_CBC_SHA", "RSA", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_DSS_WITH_CAMELLIA_128_CBC_SHA", "DH", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_DSS_WITH_CAMELLIA_256_CBC_SHA", "DH", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_RSA_WITH_CAMELLIA_128_CBC_SHA", "DH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_RSA_WITH_CAMELLIA_256_CBC_SHA", "DH", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA", "DHE", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA", "DHE", "DSS", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA", "DHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA", "DHE", "RSA", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DH_anon_WITH_CAMELLIA_128_CBC_SHA", "DH", "NULL", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_anon_WITH_CAMELLIA_256_CBC_SHA", "DH", "NULL", false, null, "CAMELLIA", "CBC", CipherType.BLOCK, 256, "SHA", 160);
     }
 
     @Test
     public void testSEED_RFC4162_CipherSuites() {
-        check("TLS_RSA_WITH_SEED_CBC_SHA384", "RSA", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_DSS_WITH_SEED_CBC_SHA384", "DH", "DSS", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_RSA_WITH_SEED_CBC_SHA384", "DH", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_DSS_WITH_SEED_CBC_SHA384", "DHE", "DSS", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_RSA_WITH_SEED_CBC_SHA384", "DHE", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DH_anon_WITH_SEED_CBC_SHA384", "DH", "NULL", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
+        check("TLS_RSA_WITH_SEED_CBC_SHA", "RSA", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_DSS_WITH_SEED_CBC_SHA", "DH", "DSS", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_RSA_WITH_SEED_CBC_SHA", "DH", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_DSS_WITH_SEED_CBC_SHA", "DHE", "DSS", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_RSA_WITH_SEED_CBC_SHA", "DHE", "RSA", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DH_anon_WITH_SEED_CBC_SHA", "DH", "NULL", false, null, "SEED", "CBC", CipherType.BLOCK, 128, "SHA", 160);
     }
 
     @Test
@@ -191,31 +191,31 @@ public class TlsCipherParserTest {
 
     @Test
     public void testEC_RFC4492_CipherSuites() {
-        check("TLS_ECDH_RSA_WITH_NULL_SHA384", "ECDH", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_ECDH_RSA_WITH_RC4_128_SHA384", "ECDH", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA384", "ECDH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDH_RSA_WITH_AES_128_CBC_SHA384", "ECDH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384", "ECDH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_ECDH_ECDSA_WITH_NULL_SHA384", "ECDH", "ECDSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_ECDH_ECDSA_WITH_RC4_128_SHA384", "ECDH", "ECDSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA384", "ECDH", "ECDSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA384", "ECDH", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384", "ECDH", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_ECDHE_RSA_WITH_NULL_SHA384", "ECDHE", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_ECDHE_RSA_WITH_RC4_128_SHA384", "ECDHE", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA384", "ECDHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA384", "ECDHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", "ECDHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_ECDHE_ECDSA_WITH_NULL_SHA384", "ECDHE", "ECDSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_ECDHE_ECDSA_WITH_RC4_128_SHA384", "ECDHE", "ECDSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA384", "ECDHE", "ECDSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA384", "ECDHE", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384", "ECDHE", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_ECDH_anon_WITH_NULL_SHA384", "ECDH", "NULL", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_ECDH_anon_WITH_RC4_128_SHA384", "ECDH", "NULL", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA384", "ECDH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDH_anon_WITH_AES_128_CBC_SHA384", "ECDH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_ECDH_anon_WITH_AES_256_CBC_SHA384", "ECDH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDH_RSA_WITH_NULL_SHA", "ECDH", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDH_RSA_WITH_RC4_128_SHA", "ECDH", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA", "ECDH", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDH_RSA_WITH_AES_128_CBC_SHA", "ECDH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDH_RSA_WITH_AES_256_CBC_SHA", "ECDH", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_ECDH_ECDSA_WITH_NULL_SHA", "ECDH", "ECDSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDH_ECDSA_WITH_RC4_128_SHA", "ECDH", "ECDSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA", "ECDH", "ECDSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA", "ECDH", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA", "ECDH", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_ECDHE_RSA_WITH_NULL_SHA", "ECDHE", "RSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDHE_RSA_WITH_RC4_128_SHA", "ECDHE", "RSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", "ECDHE", "RSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "ECDHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "ECDHE", "RSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_ECDHE_ECDSA_WITH_NULL_SHA", "ECDHE", "ECDSA", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDHE_ECDSA_WITH_RC4_128_SHA", "ECDHE", "ECDSA", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA", "ECDHE", "ECDSA", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA", "ECDHE", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA", "ECDHE", "ECDSA", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_ECDH_anon_WITH_NULL_SHA", "ECDH", "NULL", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDH_anon_WITH_RC4_128_SHA", "ECDH", "NULL", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA", "ECDH", "NULL", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDH_anon_WITH_AES_128_CBC_SHA", "ECDH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDH_anon_WITH_AES_256_CBC_SHA", "ECDH", "NULL", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
     }
 
     @Test
@@ -289,25 +289,25 @@ public class TlsCipherParserTest {
 
     @Test
     public void testPSK_RFC4279_CipherSuites() {
-        check("TLS_PSK_WITH_RC4_128_SHA384", "PSK", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_PSK_WITH_3DES_EDE_CBC_SHA384", "PSK", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_PSK_WITH_AES_128_CBC_SHA384", "PSK", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_PSK_WITH_AES_256_CBC_SHA384", "PSK", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_DHE_PSK_WITH_RC4_128_SHA384", "DHE", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA384", "DHE", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_DHE_PSK_WITH_AES_128_CBC_SHA384", "DHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_DHE_PSK_WITH_AES_256_CBC_SHA384", "DHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
-        check("TLS_RSA_PSK_WITH_RC4_128_SHA384", "RSA", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA384", "RSA", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_RSA_PSK_WITH_AES_128_CBC_SHA384", "RSA", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
-        check("TLS_RSA_PSK_WITH_AES_256_CBC_SHA384", "RSA", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_PSK_WITH_RC4_128_SHA", "PSK", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_PSK_WITH_3DES_EDE_CBC_SHA", "PSK", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_PSK_WITH_AES_128_CBC_SHA", "PSK", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_PSK_WITH_AES_256_CBC_SHA", "PSK", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_DHE_PSK_WITH_RC4_128_SHA", "DHE", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA", "DHE", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_DHE_PSK_WITH_AES_128_CBC_SHA", "DHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_DHE_PSK_WITH_AES_256_CBC_SHA", "DHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_RSA_PSK_WITH_RC4_128_SHA", "RSA", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA", "RSA", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_RSA_PSK_WITH_AES_128_CBC_SHA", "RSA", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_RSA_PSK_WITH_AES_256_CBC_SHA", "RSA", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
     }
 
     @Test
     public void testPSK_RFC4785_CipherSuites() {
-        check("TLS_PSK_WITH_NULL_SHA384", "PSK", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_DHE_PSK_WITH_NULL_SHA384", "DHE", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
-        check("TLS_RSA_PSK_WITH_NULL_SHA384", "RSA", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
+        check("TLS_PSK_WITH_NULL_SHA", "PSK", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_DHE_PSK_WITH_NULL_SHA", "DHE", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_RSA_PSK_WITH_NULL_SHA", "RSA", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
     }
 
     @Test
@@ -322,10 +322,15 @@ public class TlsCipherParserTest {
 
     @Test
     public void testPSK_RFC5489_CipherSuites() {
-        check("TLS_ECDHE_PSK_WITH_RC4_128_SHA384", "ECDHE", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA384", "ECDHE", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA384", "ECDHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
+        check("TLS_ECDHE_PSK_WITH_RC4_128_SHA", "ECDHE", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA", "ECDHE", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA", "ECDHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA", 160);
+        check("TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA", "ECDHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA", 160);
+        check("TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA256", "ECDHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 128, "SHA256", 256);
         check("TLS_ECDHE_PSK_WITH_AES_256_CBC_SHA384", "ECDHE", "PSK", false, null, "AES", "CBC", CipherType.BLOCK, 256, "SHA384", 384);
+        check("TLS_ECDHE_PSK_WITH_NULL_SHA", "ECDHE", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA", 160);
+        check("TLS_ECDHE_PSK_WITH_NULL_SHA256", "ECDHE", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA256", 256);
+        check("TLS_ECDHE_PSK_WITH_NULL_SHA384", "ECDHE", "PSK", false, null, "NULL", null, CipherType.UNKNOWN, 0, "SHA384", 384);
     }
 
     @Test
@@ -342,17 +347,17 @@ public class TlsCipherParserTest {
 
     @Test
     public void testKerberos_RFC2712_CipherSuites() {
-        check("TLS_KRB5_WITH_DES_CBC_SHA384", "KRB5", "KRB5", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA384", 384);
-        check("TLS_KRB5_WITH_3DES_EDE_CBC_SHA384", "KRB5", "KRB5", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
-        check("TLS_KRB5_WITH_RC4_128_SHA384", "KRB5", "KRB5", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
-        check("TLS_KRB5_WITH_IDEA_CBC_SHA384", "KRB5", "KRB5", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA384", 384);
+        check("TLS_KRB5_WITH_DES_CBC_SHA", "KRB5", "KRB5", false, null, "DES", "CBC", CipherType.BLOCK, 56, "SHA", 160);
+        check("TLS_KRB5_WITH_3DES_EDE_CBC_SHA", "KRB5", "KRB5", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA", 160);
+        check("TLS_KRB5_WITH_RC4_128_SHA", "KRB5", "KRB5", false, null, "RC4", null, CipherType.STREAM, 128, "SHA", 160);
+        check("TLS_KRB5_WITH_IDEA_CBC_SHA", "KRB5", "KRB5", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "SHA", 160);
         check("TLS_KRB5_WITH_DES_CBC_MD5", "KRB5", "KRB5", false, null, "DES", "CBC", CipherType.BLOCK, 56, "MD5", 128);
         check("TLS_KRB5_WITH_3DES_EDE_CBC_MD5", "KRB5", "KRB5", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "MD5", 128);
         check("TLS_KRB5_WITH_RC4_128_MD5", "KRB5", "KRB5", false, null, "RC4", null, CipherType.STREAM, 128, "MD5", 128);
         check("TLS_KRB5_WITH_IDEA_CBC_MD5", "KRB5", "KRB5", false, null, "IDEA", "CBC", CipherType.BLOCK, 128, "MD5", 128);
-        check("TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA384", "KRB5", "KRB5", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_KRB5_EXPORT_WITH_RC2_CBC_40_SHA384", "KRB5", "KRB5", true, null, "RC2", "CBC", CipherType.BLOCK, 40, "SHA384", 384);
-        check("TLS_KRB5_EXPORT_WITH_RC4_40_SHA384", "KRB5", "KRB5", true, null, "RC4", null, CipherType.STREAM, 40, "SHA384", 384);
+        check("TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA", "KRB5", "KRB5", true, null, "DES", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_KRB5_EXPORT_WITH_RC2_CBC_40_SHA", "KRB5", "KRB5", true, null, "RC2", "CBC", CipherType.BLOCK, 40, "SHA", 160);
+        check("TLS_KRB5_EXPORT_WITH_RC4_40_SHA", "KRB5", "KRB5", true, null, "RC4", null, CipherType.STREAM, 40, "SHA", 160);
         check("TLS_KRB5_EXPORT_WITH_DES_CBC_40_MD5", "KRB5", "KRB5", true, null, "DES", "CBC", CipherType.BLOCK, 40, "MD5", 128);
         check("TLS_KRB5_EXPORT_WITH_RC2_CBC_40_MD5", "KRB5", "KRB5", true, null, "RC2", "CBC", CipherType.BLOCK, 40, "MD5", 128);
         check("TLS_KRB5_EXPORT_WITH_RC4_40_MD5", "KRB5", "KRB5", true, null, "RC4", null, CipherType.STREAM, 40, "MD5", 128);
