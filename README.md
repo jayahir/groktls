@@ -40,7 +40,7 @@ A Java library for parsing TLS cipher suite and protocol variant names and filte
 
 ### Unsafe Cipher Suites and Protocol Variants
 
-By default GrokTLS excludes unsafe cipher suites and protocol variants, and unless you explicitly include them they aren't matched by filter rules, with the exception of filter rules explicitly notes as matching unsafe filters (such as `SUPPORTED`).
+By default GrokTLS excludes unsafe cipher suites and protocol variants, and unless you explicitly include them they aren't matched by filter rules, with the exception of filter rules explicitly noted as matching unsafe filters (such as `SUPPORTED`).
 The exception to this rule is that unsafe items that have already been matched in a filter will be matched by subsequent safe filters.
 
 Unsafe cipher suites are those that have:
