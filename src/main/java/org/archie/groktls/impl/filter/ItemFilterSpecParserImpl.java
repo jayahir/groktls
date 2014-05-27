@@ -77,14 +77,14 @@ public abstract class ItemFilterSpecParserImpl<I extends NamedItem, F extends Fi
         for (final String subpart : specParts) {
             final F filter = createFilter(subpart);
             if (filter == null) {
-                throw new IllegalArgumentException(String.format("Could not understand ciphersuite spec part %s%s",
+                throw new IllegalArgumentException(String.format("Could not understand spec part %s%s",
                                                                  subpart,
                                                                  (specParts.length == 1) ? "" : " of " + part));
             }
             filters.add(filter);
         }
         if (filters.isEmpty()) {
-            throw new IllegalArgumentException(String.format("Could not understand ciphersuite spec part %s", part));
+            throw new IllegalArgumentException(String.format("Could not understand spec part %s", part));
         }
         final F filter = (filters.size() == 1) ? filters.get(0) : combine(filters);
         b.step(op, filter);
