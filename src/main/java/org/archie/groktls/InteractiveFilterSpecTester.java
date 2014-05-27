@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -70,6 +71,7 @@ public class InteractiveFilterSpecTester {
 
     private SSLContext ctx;
     private final GrokTLS grok = new GrokTLS();
+    private boolean bare;
 
     private InteractiveFilterSpecTester() {
         try {
@@ -172,6 +174,10 @@ public class InteractiveFilterSpecTester {
             if (status) {
                 printStatus();
             }
+        } else if (input.equals("bare")) {
+            this.bare = true;
+        } else if (input.equals("full")) {
+            this.bare = false;
         } else {
             try {
                 final ItemFilterSpecParser<?> sp = this.ciphers ? this.grok.createCipherSuiteFilterSpecParser() : this.grok
@@ -604,46 +610,76 @@ public class InteractiveFilterSpecTester {
         }
 
         if (this.ciphers) {
-            dumpCipherSuites((FilterResult<CipherSuite>) result);
+            dumpCipherSuites((FilterResult<CipherSuite>) result, this.bare);
         } else {
-            dumpProtocolVariants((FilterResult<ProtocolVariant>) result);
+            dumpProtocolVariants((FilterResult<ProtocolVariant>) result, this.bare);
         }
     }
 
-    private static void dumpProtocolVariants(final FilterResult<ProtocolVariant> result) {
-        System.out.printf("%-20s %-8s %-5s %-3s %-6s %s%n", "Variant", "Family", "Major", "Minor", "Pseudo", "Unsafe");
-        for (final ProtocolVariant c : result.getIncluded()) {
-            System.out.printf(PV_OUTPUT_FORMAT,
-                              c.getName(),
-                              c.getFamily(),
-                              c.getMajorVersion(),
-                              c.getMinorVersion(),
-                              c.getPseudoProtocol() == null ? "" : c.getPseudoProtocol(),
-                              ProtocolVariantFilters.isSafe(c) ? "" : "*");
+    private static void dumpProtocolVariants(final FilterResult<ProtocolVariant> result, final boolean bare) {
+        if (bare) {
+            Iterator<ProtocolVariant> pvs = result.getIncluded().iterator();
+            StringBuilder flat = new StringBuilder();
+            while(pvs.hasNext()) {
+                ProtocolVariant pv = pvs.next();
+                System.out.println(pv.getName());
+                flat.append(pv.getName());
+                if (pvs.hasNext()) {
+                    flat.append(",");
+                }
+            }
+            System.out.println(flat);
+        } else {
+            System.out.printf("%-20s %-8s %-5s %-3s %-6s %s%n", "Variant", "Family", "Major", "Minor", "Pseudo", "Unsafe");
+            for (final ProtocolVariant c : result.getIncluded()) {
+                System.out.printf(PV_OUTPUT_FORMAT,
+                                  c.getName(),
+                                  c.getFamily(),
+                                  c.getMajorVersion(),
+                                  c.getMinorVersion(),
+                                  c.getPseudoProtocol() == null ? "" : c.getPseudoProtocol(),
+                                  ProtocolVariantFilters.isSafe(c) ? "" : "*");
+            }
+
         }
     }
 
-    private static void dumpCipherSuites(final FilterResult<CipherSuite> result) {
-        System.out.printf("%-40s %-8s %-8s %-10s %-4s %3s %-3s   %-6s %4s %s%n",
-                          "Cipher",
-                          "Kx",
-                          "Au",
-                          "Enc",
-                          "Mode",
-                          "Key",
-                          "Str",
-                          "Mac",
-                          "Size",
-                          "Unsafe");
-
-        for (final CipherSuite c : result.getIncluded()) {
-            if (c.isSignalling()) {
+    private static void dumpCipherSuites(final FilterResult<CipherSuite> result, final boolean bare) {
+        if (bare) {
+            Iterator<CipherSuite> cs = result.getIncluded().iterator();
+            StringBuilder flat = new StringBuilder();
+            while (cs.hasNext()) {
+                CipherSuite c = cs.next();
                 System.out.println(c.getName());
-            } else {
-                System.out.printf(CS_OUTPUT_FORMAT, c.getName(), c.getKeyExchange().getKeyAgreementAlgo(), c.getKeyExchange()
-                        .getAuthenticationAlgo(), c.getCipher().getAlgorithm(), c.getCipher().getMode() == null ? "" : c.getCipher()
-                        .getMode(), c.getCipher().getKeySize(), c.getCipher().getStrength(), c.getMac().getAlgorithm(), c.getMac()
-                        .getSize(), CipherSuiteFilters.isSafe(c) ? "" : "*");
+                flat.append(c.getName());
+                if (cs.hasNext()) {
+                    flat.append(",");
+                }
+            }
+            System.out.println();
+            System.out.println(flat);
+        } else {
+            System.out.printf("%-40s %-8s %-8s %-10s %-4s %3s %-3s   %-6s %4s %s%n",
+                              "Cipher",
+                              "Kx",
+                              "Au",
+                              "Enc",
+                              "Mode",
+                              "Key",
+                              "Str",
+                              "Mac",
+                              "Size",
+                              "Unsafe");
+
+            for (final CipherSuite c : result.getIncluded()) {
+                if (c.isSignalling()) {
+                    System.out.println(c.getName());
+                } else {
+                    System.out.printf(CS_OUTPUT_FORMAT, c.getName(), c.getKeyExchange().getKeyAgreementAlgo(), c.getKeyExchange()
+                            .getAuthenticationAlgo(), c.getCipher().getAlgorithm(), c.getCipher().getMode() == null ? "" : c.getCipher()
+                            .getMode(), c.getCipher().getKeySize(), c.getCipher().getStrength(), c.getMac().getAlgorithm(), c.getMac()
+                            .getSize(), CipherSuiteFilters.isSafe(c) ? "" : "*");
+                }
             }
         }
     }

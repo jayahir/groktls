@@ -109,9 +109,11 @@ The GrokTLS distribution is an executable jar, providing an interactive tool to 
 ### Available Commands
 
 * `-e` - process all commands on the command line immediately, and then exit.
+* `bare`/`full` - switch between bare and full output. Bare output is intended for copy-paste into config: cipher suite names are listed one per line, and on a single line comma separated.
 * `client` - switch to use client TLS defaults (e.g. what an `SSLSocket` would use).
 * `server` - switch to use server TLS defaults (e.g. what an `SSLServerSocket` would use).
 * `engine <Name>` - switch the TLS engine to the specified engine/protocol.
+* `provider <Name>` - switch to a specific JSSE provider (must also specify `engine` explicitly).
 * `cipher` or `cs` - switch to cipher suite filtering mode.
 * `proto` or `pv` - switch to protocol variant filtering mode.
 * `consistent` - analyse all JSSE APIs and display a report explaining which APIs are consistent with each other.   
