@@ -296,7 +296,6 @@ public class CipherSuiteFilters {
         return new SafeFilter() {
             @Override
             public boolean matches(final CipherSuite cipher, final Set<CipherSuite> defaults) {
-                // TODO: Note the non-equivalence to SAFE (i.e. in the context of SUPPORTED:-ALL)
                 return true;
             }
         };

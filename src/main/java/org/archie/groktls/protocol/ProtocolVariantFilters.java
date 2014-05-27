@@ -72,7 +72,6 @@ public class ProtocolVariantFilters {
         return new SafeFilter() {
             @Override
             public boolean matches(final ProtocolVariant item, final Set<ProtocolVariant> defaults) {
-                // TODO: Note the non-equivalence to SAFE (i.e. in the context of SUPPORTED:-ALL)
                 return true;
             }
         };

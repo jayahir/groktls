@@ -109,7 +109,6 @@ public class CipherImpl implements Cipher {
         if (TYPES.containsKey(algorithm)) {
             return TYPES.get(algorithm);
         }
-        System.err.printf("? '%s' '%s' '%s'%n", fullName, algorithm, mode);
         return CipherType.UNKNOWN;
     }
 
