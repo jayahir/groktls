@@ -535,7 +535,9 @@ public class CipherSuiteFilterTest extends AbstractItemFilterTest<CipherSuite> {
                                                      "TLS_DH_RSA_WITH_AES_128_CBC_SHA",
                                                      "TLS_DH_anon_WITH_AES_128_CBC_SHA",
                                                      "TLS_DH_RSA_WITH_SEED_128_CBC_SHA");
-        final List<String> expectedCiphers = Arrays.asList("TLS_DH_RSA_WITH_SEED_128_CBC_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_DH_RSA_WITH_SEED_128_CBC_SHA",
+                                                           "TLS_RSA_WITH_AES_128_CBC_SHA",
+                                                           "TLS_DH_RSA_WITH_AES_128_CBC_SHA");
         final List<String> blacklist = Collections.<String> emptyList();
         ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(all()).delete(encryption("AES")).end(encryption("AES"))
                 .sort(byKeyLength()).build();
@@ -559,22 +561,20 @@ public class CipherSuiteFilterTest extends AbstractItemFilterTest<CipherSuite> {
     public void testMoveToEndAfterBlacklist() {
         final List<String> supported = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA",
                                                      "TLS_DH_RSA_WITH_AES_128_CBC_SHA",
-                                                     "TLS_DH_anon_WITH_AES_128_CBC_SHA",
-                                                     "TLS_DH_RSA_WITH_SEED_128_CBC_SHA");
-        final List<String> expectedCiphers = Arrays.asList("TLS_DH_RSA_WITH_SEED_128_CBC_SHA");
-        final List<String> blacklist = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_DH_RSA_WITH_AES_128_CBC_SHA");
-        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(all()).blacklist(encryption("AES")).end(encryption("AES"))
+                                                     "TLS_DH_anon_WITH_AES_128_CBC_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA");
+        final List<String> blacklist = Arrays.asList("TLS_DH_RSA_WITH_AES_128_CBC_SHA");
+        ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(all()).blacklist(keyExchange("DH")).end(encryption("AES"))
                 .sort(byKeyLength()).build();
-        checkResult("ALL:!eAES:+eAES", filter, supported, expectedCiphers, Collections.<String> emptyList(), blacklist);
+        checkResult("ALL:!kDH:+eAES", filter, supported, expectedCiphers, Collections.<String> emptyList(), blacklist);
     }
 
     @Test
     public void testMoveToEnd() {
-        final List<String> supported = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA",
-                                                     "TLS_DH_RSA_WITH_AES_128_CBC_SHA",
-                                                     "TLS_DH_anon_WITH_AES_128_CBC_SHA",
-                                                     "TLS_RSA_WITH_SEED_128_CBC_SHA");
-        final List<String> expectedCiphers = Arrays.asList("TLS_RSA_WITH_SEED_128_CBC_SHA", "TLS_RSA_WITH_AES_128_CBC_SHA");
+        final List<String> supported = Arrays.asList("TLS_DH_RSA_WITH_AES_128_CBC_SHA",
+                                                     "TLS_RSA_WITH_AES_128_CBC_SHA",
+                                                     "TLS_DH_anon_WITH_AES_128_CBC_SHA");
+        final List<String> expectedCiphers = Arrays.asList("TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_DH_RSA_WITH_AES_128_CBC_SHA");
         ItemFilter<CipherSuite> filter = new CipherSuiteFilterBuilderImpl().add(all()).delete(keyExchange("DH")).end(encryption("AES"))
                 .sort(byKeyLength()).build();
         checkResult("ALL:-kDH:+eAES", filter, supported, expectedCiphers);

@@ -82,8 +82,15 @@ public abstract class ItemFilterStep<I extends NamedItem> implements Step<I> {
             break;
         case MOVE_TO_END:
         default:
-            ciphers.retainAll(result.included);
-            result.included.removeAll(ciphers);
+            // Move already matched ciphers to end
+            Set<I> toMove = new LinkedHashSet<I>(ciphers);
+            toMove.retainAll(result.included);
+            result.included.removeAll(toMove);
+            result.included.addAll(toMove);
+
+            // As per ADD
+            ciphers.removeAll(result.blacklisted);
+            result.excluded.removeAll(ciphers);
             result.included.addAll(ciphers);
             break;
 
