@@ -59,10 +59,24 @@ public class CipherImpl implements Cipher {
     static {
         STRENGTHS.put("3DES_EDE", 112);
     }
+    private static Map<String, CipherType> TYPES = new HashMap<String, CipherType>();
+
+    static {
+        TYPES.put("NULL", CipherType.UNKNOWN);
+        TYPES.put("CBC", CipherType.BLOCK);
+        TYPES.put("GCM", CipherType.AEAD);
+        TYPES.put("CCM", CipherType.AEAD);
+        TYPES.put("CCM_8", CipherType.AEAD);
+        TYPES.put("CNT", CipherType.STREAM);
+        TYPES.put("CTR", CipherType.STREAM);
+        TYPES.put("RC4", CipherType.STREAM);
+    }
 
     public static final CipherImpl CIPHER_NULL = new CipherImpl("NULL", "NULL", null, 0);
 
     public static final int DEFAULT = -1;
+
+    private final CipherType type;
 
     private final String fullName;
 
@@ -80,6 +94,21 @@ public class CipherImpl implements Cipher {
         this.mode = dealias(mode);
         this.keySize = applyDefault(algorithm, keySize);
         this.strength = applyStrength(algorithm, this.keySize);
+        this.type = identifyType(fullName, algorithm, mode);
+    }
+
+    private static CipherType identifyType(final String fullName, final String algorithm, final String mode) {
+        if (TYPES.containsKey(fullName)) {
+            return TYPES.get(fullName);
+        }
+        if (TYPES.containsKey(mode)) {
+            return TYPES.get(mode);
+        }
+        if (TYPES.containsKey(algorithm)) {
+            return TYPES.get(algorithm);
+        }
+        System.err.printf("? '%s' '%s' '%s'%n", fullName, algorithm, mode);
+        return CipherType.UNKNOWN;
     }
 
     private static int applyStrength(final String algo, final int keySize) {
@@ -97,6 +126,11 @@ public class CipherImpl implements Cipher {
             return DEFAULT_KEYSIZES.get(algo);
         }
         return keySize;
+    }
+
+    @Override
+    public CipherType getType() {
+        return this.type;
     }
 
     @Override

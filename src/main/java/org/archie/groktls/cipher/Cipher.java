@@ -21,6 +21,23 @@ package org.archie.groktls.cipher;
 public interface Cipher {
 
     /**
+     * Types of ciphers used in TLS cipher suites.
+     */
+    public enum CipherType {
+        /** The type of the cipher is unknown */
+        UNKNOWN,
+
+        /** Block ciphers, e.g. DES, AES */
+        BLOCK,
+
+        /** Stream ciphers, e.g. RC4, Salsa20 */
+        STREAM,
+
+        /** AEAD ciphers or cipher modes, e.g. AES/GCM */
+        AEAD
+    }
+
+    /**
      * Obtains the un-normalised name of the cipher, including keylength and mode, as it appears in the cipher suite (e.g.
      * <code>3DES_EDE_CBC</code> or <code>AES_256_GCM</code>.
      * <p>
@@ -59,5 +76,12 @@ public interface Cipher {
      * @return the key strength of the cipher, which will be the {@link #getKeySize() key size} if there are no major known vulnerabilities.
      */
     public int getStrength();
+
+    /**
+     * Obtains the type of this cipher.
+     *
+     * @return the type of cipher used in the cipher suite.
+     */
+    public CipherType getType();
 
 }
