@@ -64,7 +64,7 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
             return null;
         }
 
-        final String cipherHash = cs.substring(withSplit + WITH.length());
+        final String cipherHash = patchMissingHash(cs.substring(withSplit + WITH.length()));
 
         final int lastSep = cipherHash.lastIndexOf(SEPARATOR);
         if (lastSep == -1) {
@@ -102,15 +102,49 @@ public class CipherSuiteParserImpl implements ItemParser<CipherSuite> {
         return new MacImpl(hashSpec, hashSpec);
     }
 
+    private String patchMissingHash(final String cipherHash) {
+        if (cipherHash.endsWith("_CCM") || cipherHash.endsWith("_CCM_8")) {
+            // RFC 6655 omits SHA256 from CCM ciphersuites
+            return cipherHash + "_SHA256";
+        }
+        return cipherHash;
+    }
+
     private CipherImpl parseCipher(final String cipherSpec) {
         if (CipherImpl.CIPHER_NULL.getAlgorithm().equals(cipherSpec)) {
             return CipherImpl.CIPHER_NULL;
         }
-        final CipherImpl cipher = parseAlgoSizeCipher(cipherSpec);
+        CipherImpl cipher = parseAlgoStrengthModeCipher(cipherSpec);
+        if (cipher != null) {
+            return cipher;
+        }
+        cipher = parseAlgoSizeCipher(cipherSpec);
 
         return cipher;
     }
 
+    /**
+     * Parse sane CIPHER_KS_MODE cipher specs. Mode can have trailing _ separated components.
+     */
+    private CipherImpl parseAlgoStrengthModeCipher(final String cipherSpec) {
+        final Matcher algoSizeMode = Pattern.compile("([^_].+)_([0-9]+)_(.+)").matcher(cipherSpec);
+
+        if (algoSizeMode.matches()) {
+            final String algo = algoSizeMode.group(1);
+            String keysizeStr = algoSizeMode.group(2);
+            String mode = algoSizeMode.group(3);
+            try {
+                final int keySize = Integer.parseInt(keysizeStr);
+                return new CipherImpl(cipherSpec, algo, mode, keySize);
+            } catch (final NumberFormatException e) {
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Parse older cipher specs with multiple algo components and key size in random places.
+     */
     private CipherImpl parseAlgoSizeCipher(final String cipherSpec) {
         final Matcher withKeysize = Pattern.compile("(3DES_EDE|[^_]+)(_[0-9]+)?(_[^_0-9]+)?(_[0-9]+)?").matcher(cipherSpec);
         if (withKeysize.matches()) {

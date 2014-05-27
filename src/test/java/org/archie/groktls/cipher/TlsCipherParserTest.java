@@ -264,6 +264,30 @@ public class TlsCipherParserTest {
     }
 
     @Test
+    public void test_RSA_RFC6655_CipherSuites() {
+        check("TLS_RSA_WITH_AES_128_CCM", "RSA", "RSA", false, null, "AES", "CCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_RSA_WITH_AES_256_CCM", "RSA", "RSA", false, null, "AES", "CCM", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_AES_128_CCM", "DHE", "RSA", false, null, "AES", "CCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_AES_256_CCM", "DHE", "RSA", false, null, "AES", "CCM", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_RSA_WITH_AES_128_CCM_8", "RSA", "RSA", false, null, "AES", "CCM_8", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_RSA_WITH_AES_256_CCM_8", "RSA", "RSA", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_AES_128_CCM_8", "DHE", "RSA", false, null, "AES", "CCM_8", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_RSA_WITH_AES_256_CCM_8", "DHE", "RSA", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
+    }
+
+    @Test
+    public void test_PSK_RFC6655_CipherSuites() {
+        check("TLS_PSK_WITH_AES_128_CCM", "PSK", "PSK", false, null, "AES", "CCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_PSK_WITH_AES_256_CCM", "PSK", "PSK", false, null, "AES", "CCM", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_AES_128_CCM", "DHE", "PSK", false, null, "AES", "CCM", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_AES_256_CCM", "DHE", "PSK", false, null, "AES", "CCM", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_PSK_WITH_AES_128_CCM_8", "PSK", "PSK", false, null, "AES", "CCM_8", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_PSK_WITH_AES_256_CCM_8", "PSK", "PSK", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_AES_128_CCM_8", "DHE", "PSK", false, null, "AES", "CCM_8", CipherType.AEAD, 128, "SHA256", 256);
+        check("TLS_DHE_PSK_WITH_AES_256_CCM_8", "DHE", "PSK", false, null, "AES", "CCM_8", CipherType.AEAD, 256, "SHA256", 256);
+    }
+
+    @Test
     public void testPSK_RFC4279_CipherSuites() {
         check("TLS_PSK_WITH_RC4_128_SHA384", "PSK", "PSK", false, null, "RC4", null, CipherType.STREAM, 128, "SHA384", 384);
         check("TLS_PSK_WITH_3DES_EDE_CBC_SHA384", "PSK", "PSK", false, null, "3DES", "CBC", CipherType.BLOCK, 168, "SHA384", 384);
