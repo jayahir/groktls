@@ -26,18 +26,28 @@ class CipherSuiteImpl implements CipherSuite {
     private final CipherImpl cipher;
     private final MacImpl mac;
     private final String name;
+    private final String normalisedName;
     private final boolean signalling;
 
     public CipherSuiteImpl(final String name, final KeyExchangeImpl keyExchange, final CipherImpl cipher, final MacImpl mac) {
         this.name = name;
+        this.normalisedName = normalise(name);
         this.keyExchange = keyExchange;
         this.cipher = cipher;
         this.mac = mac;
         this.signalling = false;
     }
 
+    private static String normalise(final String name) {
+        if (name.startsWith("SSL_")) {
+            return "TLS_" + name.substring("SSL_".length());
+        }
+        return name;
+    }
+
     public CipherSuiteImpl(final String signallingCipherSuite) {
         this.name = signallingCipherSuite;
+        this.normalisedName = signallingCipherSuite;
         this.keyExchange = null;
         this.cipher = null;
         this.mac = null;
@@ -73,7 +83,7 @@ class CipherSuiteImpl implements CipherSuite {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + ((this.name == null) ? 0 : this.name.hashCode());
+        result = (prime * result) + ((this.normalisedName == null) ? 0 : this.normalisedName.hashCode());
         return result;
     }
 
@@ -89,11 +99,11 @@ class CipherSuiteImpl implements CipherSuite {
             return false;
         }
         final CipherSuiteImpl other = (CipherSuiteImpl) obj;
-        if (this.name == null) {
-            if (other.name != null) {
+        if (this.normalisedName == null) {
+            if (other.normalisedName != null) {
                 return false;
             }
-        } else if (!this.name.equals(other.name)) {
+        } else if (!this.normalisedName.equalsIgnoreCase(other.normalisedName)) {
             return false;
         }
         return true;
