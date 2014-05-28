@@ -38,6 +38,7 @@ public class CipherSuiteFilterSpecParserImpl extends ItemFilterSpecParserImpl<Ci
         CIPHER_STRINGS.put("FIPS140", fips());
         CIPHER_STRINGS.put("FIPS", fips());
         CIPHER_STRINGS.put("SCSV", signalling());
+        CIPHER_STRINGS.put("FS", forwardSecrecy());
 
         CIPHER_STRINGS.put("SUPPORTED", supportedIncludingUnsafe());
 

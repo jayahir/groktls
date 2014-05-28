@@ -265,6 +265,20 @@ public class CipherSuiteFilters {
     }
 
     /**
+     * Matches cipher suites that use a key exchange algorithms with forward secrecy.
+     * <p>
+     * The current interpretation of this is:
+     * <ul>
+     * <li><b>Key exchange:</b> <code>DHE, ECDHE</code></li>
+     * </ul>
+     * <p>
+     * <em>Filter spec usage:</em> <code>FS</code>.
+     */
+    public static CipherFilter forwardSecrecy() {
+        return or(keyExchange("DHE"), keyExchange("ECDHE"));
+    }
+
+    /**
      * Matches cipher suites that use a specified MAC algorithm algorithm. <br>
      * The name matched against is the one used in the cipher suite name (e.g. the underlying hash where <code>HMAC</code> is used, or the
      * MAC algorithm if something other than <code>HMAC</code> is used).
